@@ -2,20 +2,25 @@
 
 import { Node, Project } from "https://deno.land/x/ts_morph@10.0.2/mod.ts";
 
-function removeTsExtension(moduleName: string) {
-  return moduleName.replace(/\.[jt]sx?$/i, "");
+function transpileExtension(moduleName: string) {
+  return moduleName.replace(/(\/.+?)(?:\.[jt]sx?)?$/i, "$1.js");
 }
 
+const identity = <T>(t: T) => t;
+
 export interface Options {
+  readonly transformModuleSpecifier?: (specifier: string) => string;
   readonly tsConfigFilePath: string;
 }
 
 export function deno2node(options: Options) {
+  const { transformModuleSpecifier = identity } = options;
   const project = new Project({
     tsConfigFilePath: options.tsConfigFilePath,
     compilerOptions: { noEmitOnError: true },
   });
   for (const sourceFile of project.getSourceFiles()) {
+    sourceFile.fixMissingImports();
     for (const statement of sourceFile.getStatements()) {
       if (
         Node.isImportDeclaration(statement) ||
@@ -23,7 +28,9 @@ export function deno2node(options: Options) {
       ) {
         const modSpecifierValue = statement.getModuleSpecifierValue();
         if (modSpecifierValue !== undefined) {
-          statement.setModuleSpecifier(removeTsExtension(modSpecifierValue));
+          statement.setModuleSpecifier(
+            transpileExtension(transformModuleSpecifier(modSpecifierValue)),
+          );
         }
       }
     }

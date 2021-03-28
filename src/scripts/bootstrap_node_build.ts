@@ -1,6 +1,16 @@
 import { deno2node } from "../deno2node.ts";
 
-const project = deno2node({ tsConfigFilePath: Deno.args[0] });
+function transformModuleSpecifier(specifier: string): string {
+  if (specifier.startsWith("https://deno.land/x/ts_morph@")) {
+    return "ts-morph";
+  }
+  return specifier;
+}
+
+const project = deno2node({
+  tsConfigFilePath: Deno.args[0],
+  transformModuleSpecifier,
+});
 
 const result = await project.emit({});
 const diagnostics = result.getDiagnostics();
