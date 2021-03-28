@@ -1,0 +1,35 @@
+{
+  "name": "@grammyjs/deno2node",
+  "version": "0.0.0",
+  "description": "Transpiles `.ts` for Deno into `.js` and `.d.ts` for Node.js",
+  "type": "module",
+  "main": "./lib/mod.js",
+  "exports": "./lib/mod.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "src/**/*.ts",
+    "lib/**/*.ts*"
+  ],
+  "scripts": {
+    "clean": "git clean -fX lib/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wojpawlik/deno2node.git"
+  },
+  "keywords": [
+    "transpile",
+    "ts-morph",
+    "deno"
+  ],
+  "author": "Wojciech Pawlik <woj.pawlik@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wojpawlik/deno2node/issues"
+  },
+  "dependencies": {
+    "ts-morph": "^10.0.2"
+  }
+}
