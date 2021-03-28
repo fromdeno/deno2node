@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: denolib/setup-deno@v2
+    - uses: actions/checkout@v2
+    - run: deno lint --unstable
+
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: denolib/setup-deno@v2
+    - uses: actions/checkout@v2
+    - run: deno fmt --check
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: denolib/setup-deno@v2
+    - uses: actions/checkout@v2
+    - name: Bootstrap Node build
+      run:
+        deno run
+          --unstable
+          --allow-read='.'
+          --allow-write='lib/'
+          src/scripts/bootstrap_node_build.ts
+          src/tsconfig.json
