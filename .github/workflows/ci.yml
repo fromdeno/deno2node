@@ -25,7 +25,8 @@ jobs:
     steps:
     - uses: denolib/setup-deno@v2
     - uses: actions/checkout@v2
-    - name: Bootstrap Node build
+    - run : npm ci --ignore-scripts
+    - name: Create Node.js build using Deno
       run:
         deno run
           --unstable
@@ -33,3 +34,12 @@ jobs:
           --allow-write='lib/'
           src/scripts/bootstrap_node_build.ts
           src/tsconfig.json
+          lib/
+    - name: Recreate Node.js build using Node.js
+      run:
+        node
+          lib/scripts/bootstrap_node_build.js
+          src/tsconfig.json
+          lib_by_nodejs/
+    - name: Compare the builds
+      run: git diff --no-index lib/ lib_by_nodejs/

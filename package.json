@@ -13,7 +13,7 @@
     "lib/**/*.ts*"
   ],
   "scripts": {
-    "clean": "git clean -fX lib/"
+    "clean": "git clean -fX lib*/"
   },
   "repository": {
     "type": "git",

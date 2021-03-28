@@ -9,6 +9,7 @@ function transformModuleSpecifier(specifier: string): string {
 
 const project = deno2node({
   tsConfigFilePath: Deno.args[0],
+  compilerOptions: { outDir: Deno.args[1] },
   transformModuleSpecifier,
 });
 
