@@ -13,6 +13,7 @@
     "lib/**/*.ts*"
   ],
   "scripts": {
+    "prepare": "sh src/scripts/prepare.sh",
     "clean": "git clean -fX lib*/"
   },
   "repository": {

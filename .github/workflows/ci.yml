@@ -27,14 +27,7 @@ jobs:
     - uses: actions/checkout@v2
     - run : npm ci --ignore-scripts
     - name: Create Node.js build using Deno
-      run:
-        deno run
-          --unstable
-          --allow-read='.'
-          --allow-write='lib/'
-          src/scripts/bootstrap_node_build.ts
-          src/tsconfig.json
-          lib/
+      run: sh src/scripts/prepare.sh
     - name: Recreate Node.js build using Node.js
       run:
         node
