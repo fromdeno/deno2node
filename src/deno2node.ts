@@ -9,6 +9,9 @@ function transpileExtension(moduleName: string) {
 const identity = <T>(t: T) => t;
 
 export interface Options {
+  /**
+   * ⚠ Some errors are only reported with `noEmitOnError`!
+   */
   readonly compilerOptions?: ts.CompilerOptions;
   readonly transformModuleSpecifier?: (specifier: string) => string;
   readonly tsConfigFilePath: string;

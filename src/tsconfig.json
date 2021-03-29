@@ -3,6 +3,7 @@
     "declaration": true,
     "declarationMap": true,
     "module": "esnext",
+    "noEmitOnError": true,
     "outDir": "../lib/",
     "strict": true,
     "target": "ES2019"
