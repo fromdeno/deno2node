@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "denoland.vscode-deno",
-    "editorconfig.editorconfig"
+    "editorconfig.editorconfig",
+    "isral.elastic-tabstops-mono"
   ]
 }

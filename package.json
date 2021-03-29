@@ -13,8 +13,10 @@
     "lib/"
   ],
   "scripts": {
+    "fmt": "npm run --silent clean && deno fmt --ignore=node_modules/",
+    "lint": "npm run --silent clean && deno lint --ignore=node_modules/ --unstable",
     "prepare": "sh src/scripts/prepare.sh",
-    "clean": "git clean -fxde node_modules/"
+    "clean": "git clean -fXde '!node_modules/'"
   },
   "repository": {
     "type": "git",
