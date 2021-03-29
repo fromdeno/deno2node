@@ -1,5 +1,5 @@
 {
-  "name": "@grammyjs/deno2node",
+  "name": "deno2node",
   "version": "0.0.0",
   "description": "Transpiles Deno projects into `.js` and `.d.ts` for Node.js.",
   "type": "module",
