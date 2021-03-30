@@ -1,6 +1,6 @@
 {
-  "name": "@grammyjs/deno2node",
-  "version": "0.0.0",
+  "name": "deno2node",
+  "version": "0.1.1",
   "description": "Transpiles Deno projects into `.js` and `.d.ts` for Node.js.",
   "type": "module",
   "main": "./lib/mod.js",
@@ -10,17 +10,20 @@
   },
   "files": [
     "src/**/*.ts",
-    "lib/**/*.ts*"
+    "lib/"
   ],
   "scripts": {
+    "fmt": "npm run --silent clean && deno fmt --ignore=node_modules/",
+    "lint": "npm run --silent clean && deno lint --ignore=node_modules/ --unstable",
     "prepare": "sh src/scripts/prepare.sh",
-    "clean": "git clean -fX lib*/"
+    "clean": "git clean -fXde '!node_modules/'"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wojpawlik/deno2node.git"
   },
   "keywords": [
+    "typescript",
     "transpile",
     "ts-morph",
     "deno"
