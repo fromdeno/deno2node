@@ -3,6 +3,7 @@
     "declaration": true,
     "declarationMap": true,
     "module": "esnext",
+    "moduleResolution": "node",
     "noEmitOnError": true,
     "outDir": "../lib/",
     "strict": true,
