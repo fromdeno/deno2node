@@ -1,4 +1,4 @@
-// @ts-nocheck Node-only, auto-imported
+// Node-only, auto-imported
 // deno-lint-ignore-file
 export const Deno = {
   exit: process.exit,

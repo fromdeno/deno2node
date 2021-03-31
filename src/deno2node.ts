@@ -1,9 +1,12 @@
 // based on https://github.com/dsherret/code-block-writer/blob/99454249cd13bd89befa45ac815b37b3e02896f5/scripts/build_npm.ts
 
-import { Node, Project, ts } from "https://deno.land/x/ts_morph@10.0.2/mod.ts";
+import { Node, Project, ts, validatePackageName } from "./deps.deno.ts";
 
 function transpileExtension(moduleName: string) {
-  return moduleName.replace(/(\/.+?)(?:\.[jt]sx?)?$/i, "$1.js");
+  if (validatePackageName(moduleName).validForOldPackages) return moduleName;
+  return moduleName
+    .replace(/\.[jt]sx?$/i, ".js")
+    .replace(/\.deno\.js$/i, ".node.js");
 }
 
 const identity = <T>(t: T) => t;
@@ -17,14 +20,19 @@ export interface Options {
   readonly tsConfigFilePath: string;
 }
 
-export function deno2node(options: Options) {
+export function deno2node(options: Options): Project {
   const { transformModuleSpecifier = identity } = options;
   const project = new Project({
     tsConfigFilePath: options.tsConfigFilePath,
     compilerOptions: options.compilerOptions,
   });
   for (const sourceFile of project.getSourceFiles()) {
-    sourceFile.fixMissingImports();
+    if (
+      sourceFile.getBaseNameWithoutExtension().toLowerCase().endsWith(".deno")
+    ) {
+      project.removeSourceFile(sourceFile);
+      continue;
+    }
     for (const statement of sourceFile.getStatements()) {
       if (
         Node.isImportDeclaration(statement) ||
@@ -38,6 +46,7 @@ export function deno2node(options: Options) {
         }
       }
     }
+    sourceFile.fixMissingImports();
   }
   return project;
 }

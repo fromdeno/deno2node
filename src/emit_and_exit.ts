@@ -1,4 +1,4 @@
-import type { Project } from "https://deno.land/x/ts_morph@10.0.2/mod.ts";
+import type { Project } from "./deps.deno.ts";
 
 export function emitAndExit(project: Project): never {
   const result = project.emitSync();
