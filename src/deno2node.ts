@@ -9,22 +9,14 @@ function transpileExtension(moduleName: string) {
     .replace(/\.deno\.js$/i, ".node.js");
 }
 
-const identity = <T>(t: T) => t;
-
-export interface Options {
-  /**
-   * ⚠ Some errors are only reported with `noEmitOnError`!
-   */
-  readonly compilerOptions?: ts.CompilerOptions;
-  readonly transformModuleSpecifier?: (specifier: string) => string;
-  readonly tsConfigFilePath: string;
-}
-
-export function deno2node(options: Options): Project {
-  const { transformModuleSpecifier = identity } = options;
+export function deno2node(tsConfigFilePath: string): Project {
   const project = new Project({
-    tsConfigFilePath: options.tsConfigFilePath,
-    compilerOptions: options.compilerOptions,
+    tsConfigFilePath,
+    compilerOptions: {
+      allowSyntheticDefaultImports: true,
+      noEmitOnError: true,
+      strict: true,
+    },
   });
   for (const sourceFile of project.getSourceFiles()) {
     if (
@@ -40,9 +32,7 @@ export function deno2node(options: Options): Project {
       ) {
         const modSpecifierValue = statement.getModuleSpecifierValue();
         if (modSpecifierValue !== undefined) {
-          statement.setModuleSpecifier(
-            transpileExtension(transformModuleSpecifier(modSpecifierValue)),
-          );
+          statement.setModuleSpecifier(transpileExtension(modSpecifierValue));
         }
       }
     }
