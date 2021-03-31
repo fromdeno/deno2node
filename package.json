@@ -5,6 +5,7 @@
   "type": "module",
   "main": "./lib/mod.js",
   "exports": "./lib/mod.js",
+  "typings": "./lib/mod.d.ts",
   "directories": {
     "lib": "lib"
   },
@@ -35,5 +36,8 @@
   },
   "dependencies": {
     "ts-morph": "^10.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.37"
   }
 }

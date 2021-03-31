@@ -1,4 +1,4 @@
-import { deno2node } from "../deno2node.ts";
+import { deno2node, emitAndExit } from "../mod.ts";
 
 function transformModuleSpecifier(specifier: string): string {
   if (specifier.startsWith("https://deno.land/x/ts_morph@")) {
@@ -13,10 +13,4 @@ const project = deno2node({
   transformModuleSpecifier,
 });
 
-const result = await project.emit({});
-const diagnostics = result.getDiagnostics();
-if (diagnostics.length > 0) {
-  console.log(project.formatDiagnosticsWithColorAndContext(diagnostics));
-  console.error(`Found ${diagnostics.length} errors.`);
-  Deno.exit(1);
-}
+emitAndExit(project);
