@@ -1,7 +1,7 @@
 import { deno2node, emitAndExit } from "./mod.ts";
 
-if (Deno.args.length !== 1) {
-  console.info("Usage: deno2node <tsConfigFilePath>");
+if (Deno.args.length !== 1 || Deno.args[0].startsWith("-")) {
+  console.error("Usage: deno2node <tsConfigFilePath>");
   Deno.exit(2);
 }
 
