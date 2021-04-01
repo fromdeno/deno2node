@@ -18,6 +18,7 @@
     "fmt": "npm run --silent clean && deno fmt --ignore=node_modules/",
     "lint": "npm run --silent clean && deno lint --ignore=node_modules/ --unstable",
     "prepare": "deno run --unstable --allow-read='.' --allow-write='lib/' src/cli.ts src/tsconfig.json",
+    "preversion": "sh scripts/preversion.sh",
     "clean": "git clean -fXde '!node_modules/'"
   },
   "repository": {

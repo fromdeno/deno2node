@@ -21,5 +21,5 @@ $ deno2node <tsConfigFilePath>
 ## Usage from Deno
 
 ```sh
-$ deno run --unstable --allow-read --allow-write <src/cli.ts> <tsConfigFilePath>
+$ deno run --unstable --allow-read --allow-write https://raw.githubusercontent.com/wojpawlik/deno2node/cli/src/cli.ts <tsConfigFilePath>
 ```
