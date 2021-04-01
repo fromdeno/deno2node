@@ -29,10 +29,12 @@ jobs:
     - name: Create Node.js build using Deno
       run: |
         npm run prepare
+        chmod +x lib/cli.js
         mv lib/ lib_by_deno
     - name: Recreate Node.js build using Node.js
       run: |
-        node lib_by_deno/cli.js src/tsconfig.json
+        ./lib_by_deno/cli.js src/tsconfig.json
+        chmod +x lib/cli.js
         mv lib/ lib_by_nodejs
     - name: Compare the builds
       run: git diff --no-index lib_by_deno/ lib_by_nodejs/
