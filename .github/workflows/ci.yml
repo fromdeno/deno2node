@@ -27,12 +27,12 @@ jobs:
     - uses: actions/checkout@v2
     - run : npm ci --ignore-scripts
     - name: Create Node.js build using Deno
-      run: sh src/scripts/prepare.sh
+      run: |
+        npm run prepare
+        mv lib/ lib_by_deno
     - name: Recreate Node.js build using Node.js
-      run:
-        node
-          lib/scripts/bootstrap_node_build.js
-          src/tsconfig.json
-          lib_by_nodejs/
+      run: |
+        node lib_by_deno/cli.js src/tsconfig.json
+        mv lib/ lib_by_nodejs
     - name: Compare the builds
-      run: git diff --no-index lib/ lib_by_nodejs/
+      run: git diff --no-index lib_by_deno/ lib_by_nodejs/

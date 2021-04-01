@@ -3,6 +3,7 @@
   "version": "0.1.2",
   "description": "Transpiles Deno projects into `.js` and `.d.ts` for Node.js.",
   "type": "module",
+  "bin": "./bin.mjs",
   "main": "./lib/mod.js",
   "exports": "./lib/mod.js",
   "typings": "./lib/mod.d.ts",
@@ -16,7 +17,8 @@
   "scripts": {
     "fmt": "npm run --silent clean && deno fmt --ignore=node_modules/",
     "lint": "npm run --silent clean && deno lint --ignore=node_modules/ --unstable",
-    "prepare": "sh src/scripts/prepare.sh",
+    "prepare": "deno run --unstable --allow-read='.' --allow-write='lib/' src/cli.ts src/tsconfig.json",
+    "preversion": "sh scripts/preversion.sh",
     "clean": "git clean -fXde '!node_modules/'"
   },
   "repository": {
