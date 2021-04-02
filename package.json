@@ -4,7 +4,7 @@
   "description": "Transpiles Deno projects into `.js` and `.d.ts` for Node.js.",
   "type": "module",
   "bin": {
-    "deno2node": "bin.mjs"
+    "deno2node": "./lib/cli.js"
   },
   "main": "./lib/mod.js",
   "exports": "./lib/mod.js",
