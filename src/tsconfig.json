@@ -1,4 +1,7 @@
 {
+  "deno2node": {
+    "shim": "./shim.node.ts"
+  },
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "declaration": true,
