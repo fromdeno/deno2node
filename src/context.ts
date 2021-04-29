@@ -14,7 +14,6 @@ export class Context {
       compilerOptions: {
         declarationMap: false, // doesn't reflect deno2node transforms
         inlineSourceMap: false, // doesn't reflect deno2node transforms
-        noEmitOnError: true, // for diagnostics
         sourceMap: false, // doesn't reflect deno2node transforms
         strict: true,
       },
