@@ -1,6 +1,6 @@
 # deno2node
 
-<a href="https://doc.deno.land/https/raw.githubusercontent.com/wojpawlik/deno2node/v0.3.0/src/mod.ts"><img src="https://doc.deno.land/badge.svg" alt="deno doc"></a>
+<a href="https://doc.deno.land/https/raw.githubusercontent.com/wojpawlik/deno2node/main/src/mod.ts"><img src="https://doc.deno.land/badge.svg" alt="deno doc"></a>
 
 Transpiles Deno projects into `.js` and `.d.ts` for Node.js.
 
@@ -38,5 +38,5 @@ $ deno2node <tsConfigFilePath>
 $ deno run --unstable --allow-read --allow-write https://raw.githubusercontent.com/wojpawlik/deno2node/v0.3.0/src/cli.ts <tsConfigFilePath>
 ```
 
-[`deps.node.ts`]: https://github.com/wojpawlik/deno2node/v0.3.0/main/src/deps.node.ts
-[`shim.node.ts`]: https://github.com/wojpawlik/deno2node/v0.3.0/main/src/shim.node.ts
+[`deps.node.ts`]: https://github.com/wojpawlik/deno2node/blob/main/src/deps.node.ts
+[`shim.node.ts`]: https://github.com/wojpawlik/deno2node/blob/main/src/shim.node.ts
