@@ -1,2 +1,2 @@
-export * from "./deno2node.ts";
-export { emitAndExit } from "./emit_and_exit.ts";
+export { deno2node } from "./deno2node.ts";
+export { emit } from "./emit.ts";

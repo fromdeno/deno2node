@@ -10,14 +10,6 @@ function transpileExtension(moduleName: string) {
     .replace(/\.deno\.js$/i, ".node.js");
 }
 
-function transpileShebang(sourceFile: SourceFile) {
-  const regex = /^#!\/usr\/bin\/env -S deno run\b[^\n]*/;
-  const match = regex.exec(sourceFile.getFullText());
-  if (match !== null) {
-    sourceFile.replaceText([0, match[0].length], "#!/usr/bin/env node");
-  }
-}
-
 function transpileImportSpecifiers(sourceFile: SourceFile) {
   for (const statement of sourceFile.getStatements()) {
     if (
@@ -64,7 +56,6 @@ export function deno2node(tsConfigFilePath: string): Project {
     }
     transpileImportSpecifiers(sourceFile);
     shim(sourceFile);
-    transpileShebang(sourceFile);
   }
   return ctx.project;
 }
