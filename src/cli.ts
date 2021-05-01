@@ -1,9 +1,17 @@
 #!/usr/bin/env -S deno run --unstable --allow-read --allow-write
-import { deno2node, emitAndExit } from "./mod.ts";
+import { ts } from "./deps.deno.ts";
+import { deno2node, emit } from "./mod.ts";
 
 if (Deno.args.length !== 1 || Deno.args[0].startsWith("-")) {
   console.error("Usage: deno2node <tsConfigFilePath>");
   Deno.exit(2);
 }
 
-emitAndExit(deno2node(Deno.args[0]));
+const project = deno2node(Deno.args[0]);
+const diagnostics = await emit(project);
+if (diagnostics.length !== 0) {
+  console.info(project.formatDiagnosticsWithColorAndContext(diagnostics));
+  console.info("TypeScript", ts.version);
+  console.info(`Found ${diagnostics.length} errors.`);
+  Deno.exit(1);
+}
