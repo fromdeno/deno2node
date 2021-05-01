@@ -1,6 +1,6 @@
 {
   "name": "deno2node",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Transpiles Deno projects into `.js` and `.d.ts` for Node.js.",
   "type": "module",
   "bin": {
