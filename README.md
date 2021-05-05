@@ -1,6 +1,7 @@
 # deno2node
 
-<a href="https://doc.deno.land/https/raw.githubusercontent.com/wojpawlik/deno2node/main/src/mod.ts"><img src="https://doc.deno.land/badge.svg" alt="deno doc"></a>
+<a href="https://doc.deno.land/https/deno.land/x/deno2node/src/mod.ts"><img src="https://doc.deno.land/badge.svg" alt="deno doc"></a>
+<a href="https://discord.gg/SdVDrZDsW9"><img src="https://badgen.net/discord/members/SdVDrZDsW9?icon=discord" alt="discord"></a>
 
 Transpiles Deno projects into `.js` and `.d.ts` for Node.js.
 
@@ -22,20 +23,27 @@ and add the following to your `tsconfig.json`:
 }
 ```
 
-## Usage from Node.js
+## CLI Usage
 
 ```sh
-$ npm install --save-dev deno2node
+$ deno run \
+  --no-check \
+  --allow-read \
+  --allow-write  \
+  https://deno.land/x/deno2node/src/cli.ts \
+  <tsConfigFilePath>
+```
+
+<!-- deno-fmt-ignore -->
+As a by-product of end-to-end testing,
+Node.js build is also available:
+
+```sh
+$ npm install --save-dev --save-prefix='~' deno2node
 ```
 
 ```sh
 $ deno2node <tsConfigFilePath>
-```
-
-## Usage from Deno
-
-```sh
-$ deno run --unstable --allow-read --allow-write https://raw.githubusercontent.com/wojpawlik/deno2node/v0.3.0/src/cli.ts <tsConfigFilePath>
 ```
 
 [`deps.node.ts`]: https://github.com/wojpawlik/deno2node/blob/main/src/deps.node.ts

@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --unstable --allow-read --allow-write
+#!/usr/bin/env -S deno run --no-check --allow-read --allow-write
 import { ts } from "./deps.deno.ts";
 import { deno2node, emit } from "./mod.ts";
 
