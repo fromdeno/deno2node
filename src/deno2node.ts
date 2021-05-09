@@ -1,7 +1,7 @@
 // based on https://github.com/dsherret/code-block-writer/blob/99454249cd13bd89befa45ac815b37b3e02896f5/scripts/build_npm.ts
 
+import { Node, SourceFile, validatePackageName } from "./deps.deno.ts";
 import { Context } from "./context.ts";
-import { Node, Project, SourceFile, validatePackageName } from "./deps.deno.ts";
 
 function transpileExtension(moduleName: string) {
   if (validatePackageName(moduleName).validForOldPackages) return moduleName;
@@ -46,8 +46,7 @@ function createShimmer(ctx: Context) {
 const isDenoSpecific = (sourceFile: SourceFile) =>
   sourceFile.getBaseNameWithoutExtension().toLowerCase().endsWith(".deno");
 
-export function deno2node(tsConfigFilePath: string): Project {
-  const ctx = new Context(tsConfigFilePath);
+export function deno2node(ctx: Context): void {
   const shim = createShimmer(ctx);
   for (const sourceFile of ctx.project.getSourceFiles()) {
     if (isDenoSpecific(sourceFile)) {
@@ -57,5 +56,4 @@ export function deno2node(tsConfigFilePath: string): Project {
     transpileImportSpecifiers(sourceFile);
     shim(sourceFile);
   }
-  return ctx.project;
 }
