@@ -34,7 +34,8 @@ function createShimmer(ctx: Context) {
   const namedImports = Array.from(shimFile.getExportedDeclarations().keys());
   return (sourceFile: SourceFile) => {
     if (sourceFile === shimFile) return;
-    sourceFile.addImportDeclaration({
+    const index = sourceFile.getStatementsWithComments().length;
+    sourceFile.insertImportDeclaration(index, {
       namedImports,
       moduleSpecifier: `${
         sourceFile.getRelativePathAsModuleSpecifierTo(shimFile)

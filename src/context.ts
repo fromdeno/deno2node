@@ -15,9 +15,6 @@ export class Context {
     this.project = new Project({
       tsConfigFilePath,
       compilerOptions: {
-        declarationMap: false, // doesn't reflect deno2node transforms
-        inlineSourceMap: false, // doesn't reflect deno2node transforms
-        sourceMap: false, // doesn't reflect deno2node transforms
         strict: true,
       },
     });
