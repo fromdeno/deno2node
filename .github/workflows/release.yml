@@ -20,7 +20,6 @@ jobs:
         deno-version: ${{ steps.version.outputs.prop }}
     - run: npm ci --ignore-scripts
     - run: npm run prepare
-    - run: npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
     - run: npm publish --ignore-scripts
       env:
-        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        npm_config__auth: ${{ secrets.NPM_TOKEN }}
