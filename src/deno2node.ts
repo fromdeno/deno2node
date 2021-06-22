@@ -1,14 +1,8 @@
 // based on https://github.com/dsherret/code-block-writer/blob/99454249cd13bd89befa45ac815b37b3e02896f5/scripts/build_npm.ts
 
-import { Node, SourceFile, validatePackageName } from "./deps.deno.ts";
 import { Context } from "./context.ts";
-
-function transpileExtension(moduleName: string) {
-  if (validatePackageName(moduleName).validForOldPackages) return moduleName;
-  return moduleName
-    .replace(/\.[jt]sx?$/i, ".js")
-    .replace(/\.deno\.js$/i, ".node.js");
-}
+import { Node, SourceFile } from "./deps.deno.ts";
+import { transpileSpecifier } from "./_transformations/specifiers.ts";
 
 function transpileImportSpecifiers(sourceFile: SourceFile) {
   for (const statement of sourceFile.getStatements()) {
@@ -18,7 +12,7 @@ function transpileImportSpecifiers(sourceFile: SourceFile) {
     ) {
       const modSpecifierValue = statement.getModuleSpecifierValue();
       if (modSpecifierValue !== undefined) {
-        statement.setModuleSpecifier(transpileExtension(modSpecifierValue));
+        statement.setModuleSpecifier(transpileSpecifier(modSpecifierValue));
       }
     }
   }
@@ -47,6 +41,31 @@ function createShimmer(ctx: Context) {
 const isDenoSpecific = (sourceFile: SourceFile) =>
   sourceFile.getBaseNameWithoutExtension().toLowerCase().endsWith(".deno");
 
+/**
+ * Attempts to transform arbitrary `ctx.project` into a valid Node.js project:
+ *
+ * 1. Changes import specifiers to be Node-friendly:
+ *    - changes extension in relative specifiers to `.js`,
+ *    - replaces some `https://` imports with bare specifiers.
+ *
+ * 2. Changes `*.deno.js` imports specifiers to `*.node.js`
+ *    (`import './deps.deno.ts'` -> `import './deps.node.js'`).
+ *    This can be used for re-exporting dependencies
+ *    and other runtime-specific code.
+ *
+ * 3. Imports Node.js shims for Deno globals
+ *    from [shim file], if specified:
+ *    ```jsonc
+ *    // tsconfig.json
+ *    {
+ *      "deno2node": {
+ *        "shim": "src/shim.node.ts"
+ *      }
+ *    }
+ *    ```
+ *
+ * [shim file]: https://github.com/wojpawlik/deno2node/blob/main/src/shim.node.ts
+ */
 export function deno2node(ctx: Context): void {
   const shim = createShimmer(ctx);
   for (const sourceFile of ctx.project.getSourceFiles()) {

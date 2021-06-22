@@ -26,6 +26,7 @@
     "type": "git",
     "url": "git+https://github.com/wojpawlik/deno2node.git"
   },
+  "homepage": "https://fromdeno.org",
   "keywords": [
     "typescript",
     "transpile",
@@ -44,6 +45,7 @@
   "dependencies": {
     "ts-morph": "^11.0.0",
     "validate-npm-package-name": "^3.0.0",
+    "xregexp": "^5.0.2",
     "zod": "^3.2.0"
   },
   "devDependencies": {
