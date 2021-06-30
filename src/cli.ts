@@ -7,7 +7,7 @@ if (Deno.args.length !== 1 || Deno.args[0].startsWith("-")) {
   Deno.exit(2);
 }
 
-const ctx = new Context(Deno.args[0]);
+const ctx = new Context({ tsConfigFilePath: Deno.args[0] });
 deno2node(ctx);
 const diagnostics = await emit(ctx.project);
 if (diagnostics.length !== 0) {

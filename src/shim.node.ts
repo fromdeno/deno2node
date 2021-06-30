@@ -6,5 +6,6 @@ export const Deno = {
   args: process.argv.slice(2),
   build: { os },
   chmod,
+  cwd: process.cwd,
   exit: process.exit,
 };
