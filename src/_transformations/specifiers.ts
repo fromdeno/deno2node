@@ -1,7 +1,7 @@
-import validatePackageName from "https://esm.sh/validate-npm-package-name@3.0.0";
 import XR from "https://cdn.skypack.dev/xregexp@5.0.2?dts";
 
-const scopedPackage = validatePackageName.scopedPackagePattern;
+// from https://github.com/npm/validate-npm-package-name/blob/80313b82a5c7e466556c3a7fb1cb7d7dab92f4be/index.js#L3
+const scopedPackage = new RegExp("^(?:@([^/]+?)[/])?([^/]+?)$");
 // from https://semver.org/
 const version = XR.tag("xn")`
   ^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$

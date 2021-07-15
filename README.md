@@ -1,33 +1,25 @@
+<!-- deno-fmt-ignore-file -->
 # deno2node
-
-<a href="https://doc.deno.land/https/deno.land/x/deno2node/src/mod.ts"><img src="https://doc.deno.land/badge.svg" alt="deno doc"></a>
-<a href="https://discord.gg/SdVDrZDsW9"><img src="https://badgen.net/discord/members/SdVDrZDsW9?icon=discord" alt="discord"></a>
 
 Transpiles Deno projects into `.js` and `.d.ts` for Node.js.
 
-## Preparing your project
+## Motivation
 
-Rename `deps.ts` to `deps.deno.ts`, create corresponding [`deps.node.ts`].
-
-<!-- deno-fmt-ignore -->
-If you're using some Deno globals not available in Node (`Deno`, `fetch`...),
-export their shims from [`shim.node.ts`],
-and add the following to your `tsconfig.json`:
-
-```jsonc
-// tsconfig.json
-{
-  "deno2node": {
-    "shim": "src/shim.node.ts"
-  }
-}
-```
+> Deno provides the superior developer experience:
+> it requires no explicit transpilation step,
+> and ships with 0conf tooling that works well together.
+>
+> We \[https://fromdeno.org\]
+> prefer to write code targeting Deno,
+> and use tools to create the Node.js variant,
+> rather than vice-versa.
 
 ## CLI Usage
 
 ```sh
 $ deno run \
   --no-check \
+  --unstable  \
   --allow-read \
   --allow-write  \
   https://deno.land/x/deno2node/src/cli.ts \
@@ -46,5 +38,12 @@ $ npm install --save-dev --save-prefix='~' deno2node
 $ deno2node <tsConfigFilePath>
 ```
 
+`tsconfig.json` is used to specify `compilerOptions` and source `files` to `include`.
+
+[API reference] explains transformations and configuration.
+
+Note: output and diagnostics will change across minor versions.
+
+[API reference]: https://doc.deno.land/https/deno.land/x/deno2node/src/mod.ts
 [`deps.node.ts`]: https://github.com/wojpawlik/deno2node/blob/main/src/deps.node.ts
 [`shim.node.ts`]: https://github.com/wojpawlik/deno2node/blob/main/src/shim.node.ts
