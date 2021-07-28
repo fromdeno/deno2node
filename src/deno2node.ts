@@ -3,6 +3,7 @@
 import { Context } from "./context.ts";
 import { Node, SourceFile } from "./deps.deno.ts";
 import { transpileSpecifier } from "./_transformations/specifiers.ts";
+import { vendorEverything } from "./_transformations/vendor.ts";
 
 function transpileImportSpecifiers(sourceFile: SourceFile) {
   for (const statement of sourceFile.getStatements()) {
@@ -53,10 +54,21 @@ const isDenoSpecific = (sourceFile: SourceFile) =>
  *    This can be used for re-exporting dependencies
  *    and other runtime-specific code.
  *
- * 3. Imports Node.js shims for Deno globals
+ * 3. Vendors remaining https?:// imports
+ *    into `vendorDir`, if specified:
+ *    ```jsonc
+ *    // @filename: tsconfig.json
+ *    {
+ *      "deno2node": {
+ *        "vendorDir": "src/.deno2node/vendor/"
+ *      }
+ *    }
+ *    ```
+ *
+ * 4. Imports Node.js shims for Deno globals
  *    from [shim file], if specified:
  *    ```jsonc
- *    // tsconfig.json
+ *    // @filename: tsconfig.json
  *    {
  *      "deno2node": {
  *        "shim": "src/shim.node.ts"
@@ -66,7 +78,7 @@ const isDenoSpecific = (sourceFile: SourceFile) =>
  *
  * [shim file]: https://github.com/wojpawlik/deno2node/blob/main/src/shim.node.ts
  */
-export function deno2node(ctx: Context): void {
+export async function deno2node(ctx: Context): Promise<void> {
   const shim = createShimmer(ctx);
   for (const sourceFile of ctx.project.getSourceFiles()) {
     if (isDenoSpecific(sourceFile)) {
@@ -74,6 +86,9 @@ export function deno2node(ctx: Context): void {
       continue;
     }
     transpileImportSpecifiers(sourceFile);
+  }
+  await vendorEverything(ctx);
+  for (const sourceFile of ctx.project.getSourceFiles()) {
     shim(sourceFile);
   }
 }

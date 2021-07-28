@@ -78,6 +78,24 @@ This technique has many uses.
 `deno2node` uses it to import from https://deno.land/x.
 [`grammy`] will probably also use it to abstract away platform-specific APIs.
 
+### Vendoring
+
+If you import a module which has no npm equivalent,
+`deno2node` will vendor it in `vendorDir`, if specified:
+
+```jsonc
+// @filename: tsconfig.json
+{
+  "deno2node": {
+    "vendorDir": "src/.deno2node/vendor/" // path within `rootDir`
+  }
+}
+```
+
+Vendoring requires `--allow-env`, to locate Deno cache.
+
+Note: vendoring is currently slow and poorly tested.
+
 [`grammY`]: https://github.com/grammyjs/grammY
 [`ts-morph`]: https://github.com/dsherret/ts-morph
 [API reference]: https://doc.deno.land/https/deno.land/x/deno2node/src/mod.ts

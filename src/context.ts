@@ -7,6 +7,7 @@ const compilerOptions: ts.CompilerOptions = {
 
 const Config = z.strictObject({
   shim: z.string().optional(),
+  vendorDir: z.string().optional(),
 });
 
 interface Options {
@@ -39,7 +40,7 @@ export class Context {
     this.config = Config.parse(result.config.deno2node ?? {});
   }
 
-  resolve(path_: string) {
-    return path.join(this.baseDir, path_);
+  resolve(...pathSegments: string[]) {
+    return path.join(this.baseDir, ...pathSegments);
   }
 }

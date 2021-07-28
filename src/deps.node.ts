@@ -2,4 +2,5 @@
 // please keep sorted
 export { default as path } from "path";
 export { z } from "zod";
+export * from "deno-cache";
 export * from "ts-morph";
