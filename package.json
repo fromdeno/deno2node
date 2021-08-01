@@ -19,7 +19,7 @@
   "scripts": {
     "fmt": "npm run --silent clean && deno fmt --ignore=node_modules/",
     "lint": "npm run --silent clean && deno lint --ignore=node_modules/ --unstable",
-    "prepare": "deno run --unstable --allow-read='.' --allow-write='lib/' src/cli.ts src/tsconfig.json",
+    "prepare": "deno run --unstable --allow-read --allow-write='lib/' --allow-env src/cli.ts src/tsconfig.json",
     "clean": "git clean -fXde '!node_modules/'"
   },
   "repository": {
@@ -43,7 +43,6 @@
     "deno": "~1.11"
   },
   "dependencies": {
-    "deno-cache": "^0.2.12",
     "ts-morph": "^11.0.0",
     "xregexp": "^5.0.2",
     "zod": "^3.2.0"

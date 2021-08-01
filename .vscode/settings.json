@@ -2,6 +2,9 @@
   "deno.enable": true,
   "deno.lint": true,
   "deno.unstable": false,
+  "deno.suggest.imports.hosts": {
+    "https://deno.land": true
+  },
   "editor.defaultFormatter": "denoland.vscode-deno",
   "editor.formatOnSave": true
 }

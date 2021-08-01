@@ -1,5 +1,6 @@
-import { cache, File, Node, path, SourceFile } from "../deps.deno.ts";
+import { Node, SourceFile } from "../deps.deno.ts";
 import type { Context } from "../context.ts";
+import * as cache from "../cache.ts";
 
 interface LocalFile {
   readonly sourceFile: SourceFile;
@@ -7,7 +8,7 @@ interface LocalFile {
 }
 
 const createVendorSpecifiersFn = (ctx: Context) =>
-  async ({ sourceFile, url }: LocalFile) => {
+  ({ sourceFile, url }: LocalFile): cache.Entry[] => {
     if (!ctx.config.vendorDir) return [];
     const cachedFiles = [];
     for (const statement of sourceFile.getStatements()) {
@@ -19,10 +20,10 @@ const createVendorSpecifiersFn = (ctx: Context) =>
         if (oldSpecifierValue === undefined) continue;
         const newUrl = new URL(oldSpecifierValue, url);
         if (newUrl.protocol === "file:") continue;
-        const cachedFile = await cache(newUrl);
+        const cachedFile = cache.entry(newUrl);
         cachedFiles.push(cachedFile);
         const newSpecifierValue = sourceFile.getRelativePathAsModuleSpecifierTo(
-          ctx.resolve(ctx.config.vendorDir, cachedFile.hash),
+          ctx.resolve(ctx.config.vendorDir, newUrl.hostname, cachedFile.hash),
         ) + ".js";
         statement.setModuleSpecifier(newSpecifierValue);
       }
@@ -30,20 +31,23 @@ const createVendorSpecifiersFn = (ctx: Context) =>
     return cachedFiles;
   };
 
-const createVendorFileFn = (ctx: Context) =>
-  async (file: File): Promise<LocalFile[]> => {
+const createVendorFileFn = (ctx: Context) => {
+  const seen = new Set<string>();
+  return async (file: cache.Entry): Promise<LocalFile[]> => {
+    if (seen.has(file.url.href)) return [];
+    seen.add(file.url.href);
     const vendoredPath = ctx.resolve(
       ctx.config.vendorDir!,
-      `${file.hash}${path.extname(file.path)}`,
+      file.url.hostname,
+      `${file.hash}.ts`,
     );
-    if (ctx.project.getSourceFile(vendoredPath) !== undefined) return [];
     const sourceFile = ctx.project.createSourceFile(
       vendoredPath,
       await ctx.project.getFileSystem().readFile(file.path),
-      { overwrite: true },
     );
     return [{ sourceFile, url: file.url }];
   };
+};
 
 const pMap = async <T, U>(array: T[], fn: (t: T) => Promise<U>) =>
   await Promise.all(array.map(fn));
@@ -62,15 +66,11 @@ export async function vendorEverything(ctx: Context) {
   const vendorSpecifiers = createVendorSpecifiersFn(ctx);
   const vendorFile = createVendorFileFn(ctx);
 
-  let toVendor = await pFlatMap(
-    ctx.project.getSourceFiles().map(addUrl),
+  let toVendor = ctx.project.getSourceFiles().map(addUrl).flatMap(
     vendorSpecifiers,
   );
 
   while (toVendor.length !== 0) {
-    toVendor = await pFlatMap(
-      await pFlatMap(toVendor, vendorFile),
-      vendorSpecifiers,
-    );
+    toVendor = (await pFlatMap(toVendor, vendorFile)).flatMap(vendorSpecifiers);
   }
 }

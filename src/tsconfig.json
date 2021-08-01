@@ -1,5 +1,6 @@
 {
   "deno2node": {
+    "vendorDir": ".deno2node/vendor/",
     "shim": "./shim.node.ts"
   },
   "compilerOptions": {

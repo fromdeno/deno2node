@@ -7,5 +7,6 @@ export const Deno = {
   build: { os },
   chmod,
   cwd: process.cwd,
+  env: { get: (key: string) => process.env[key] },
   exit: process.exit,
 };
