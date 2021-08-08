@@ -21,7 +21,7 @@ $ deno run \
   --no-check \
   --unstable  \
   --allow-read \
-  --allow-write  \
+  --allow-write=<outDir> \
   https://deno.land/x/deno2node/src/cli.ts \
   <tsConfigFilePath>
 ```
@@ -49,11 +49,13 @@ Note: output and diagnostics will change across minor versions.
 To use Deno globals not available in Node.js,
 create and register a file exporting all the shims you need:
 
+```sh
+$ npm install deno.ns
+```
+
 ```js
 // @filename: src/shim.node.ts
 export * from "deno.ns";
-export * from "node-fetch";
-export { default as fetch } from "node-fetch";
 ```
 
 ```jsonc
@@ -96,8 +98,10 @@ Vendoring requires `--allow-env`, to locate Deno cache.
 
 Note: vendoring is currently slow and poorly tested.
 
+Consider recommending [`pnpm`] to users of your library.
+It might be able to deduplicate vendored files across packages.
+
 [`grammY`]: https://github.com/grammyjs/grammY
+[`pnpm`]: https://github.com/pnpm/pnpm#background
 [`ts-morph`]: https://github.com/dsherret/ts-morph
 [API reference]: https://doc.deno.land/https/deno.land/x/deno2node/src/mod.ts
-[`deps.node.ts`]: https://github.com/wojpawlik/deno2node/blob/main/src/deps.node.ts
-[`shim.node.ts`]: https://github.com/wojpawlik/deno2node/blob/main/src/shim.node.ts
