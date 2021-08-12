@@ -6,7 +6,7 @@ on:
     branches: [ main ]
 
 jobs:
-  version:
+  build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -15,38 +15,12 @@ jobs:
         path: package.json
         prop_path: engines.deno
       id: version
-    outputs:
-      deno-version: ${{ steps.version.outputs.prop }}
-
-  lint:
-    runs-on: ubuntu-latest
-    needs: version
-    steps:
-    - uses: actions/checkout@v2
     - uses: denoland/setup-deno@v1
       with:
-        deno-version: ${{ needs.version.outputs.version }}
-    - run: deno lint --unstable
-
-  fmt:
-    runs-on: ubuntu-latest
-    needs: version
-    steps:
-    - uses: actions/checkout@v2
-    - uses: denoland/setup-deno@v1
-      with:
-        deno-version: ${{ needs.version.outputs.version }}
+        deno-version: ${{ steps.version.outputs.prop }}
+    - run: deno lint
     - run: deno fmt --check
-
-  build:
-    runs-on: ubuntu-latest
-    needs: version
-    steps:
-    - uses: actions/checkout@v2
-    - uses: denoland/setup-deno@v1
-      with:
-        deno-version: ${{ needs.version.outputs.version }}
-    - run : npm ci --ignore-scripts
+    - run: npm ci --ignore-scripts
     - name: Create Node.js build using Deno
       run: |
         npm run prepare
