@@ -19,8 +19,9 @@
   "scripts": {
     "fmt": "npm run --silent clean && deno fmt --ignore=node_modules/",
     "lint": "npm run --silent clean && deno lint --ignore=node_modules/",
+    "test": "npm run --silent prepare",
     "prepare": "deno run --unstable --allow-read --allow-write='lib/' --allow-env src/cli.ts src/tsconfig.json",
-    "clean": "git clean -fXde '!node_modules/'"
+    "clean": "git clean -fXde !node_modules/"
   },
   "repository": {
     "type": "git",
