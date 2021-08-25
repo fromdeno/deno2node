@@ -1,4 +1,5 @@
 <!-- deno-fmt-ignore-file -->
+
 # deno2node
 
 Transpiles Deno projects into `.js` and `.d.ts` for Node.js.
@@ -16,17 +17,34 @@ and simplifies development experience:
 
 ## CLI Usage
 
+You can directly run the CLI from the script hosted on `deno.land/x`:
+
 ```sh
-$ deno run \
-  --no-check \
-  --unstable  \
-  --allow-read \
-  --allow-write=<outDir> \
+$ deno run                                 \
+  --no-check                               \
+  --unstable                               \
+  --allow-read                             \
+  --allow-write=<outDir>                   \
   https://deno.land/x/deno2node/src/cli.ts \
   <tsConfigFilePath>
 ```
 
-<!-- deno-fmt-ignore -->
+Alternatively, you can first compile an executable file from it, which can in turn be run:
+
+```sh
+# Install deno2node CLI
+$ deno install                             \
+  --no-check                               \
+  --unstable                               \
+  --allow-read                             \
+  --allow-write                            \
+  --name deno2node
+  https://deno.land/x/deno2node/src/cli.ts \
+  <tsConfigFilePath>
+# Compile your project
+$ deno2node <tsConfigFilePath>
+```
+
 As a by-product of end-to-end testing,
 Node.js build is also available:
 
@@ -101,7 +119,7 @@ Note: vendoring is currently slow and poorly tested.
 Consider recommending [`pnpm`] to users of your library.
 It might be able to deduplicate vendored files across packages.
 
-[`grammY`]: https://github.com/grammyjs/grammY
+[`grammy`]: https://github.com/grammyjs/grammY
 [`pnpm`]: https://github.com/pnpm/pnpm#background
 [`ts-morph`]: https://github.com/dsherret/ts-morph
-[API reference]: https://doc.deno.land/https/deno.land/x/deno2node/src/mod.ts
+[api reference]: https://doc.deno.land/https/deno.land/x/deno2node/src/mod.ts
