@@ -1,5 +1,4 @@
 <!-- deno-fmt-ignore-file -->
-
 # deno2node
 
 Transpiles Deno projects into `.js` and `.d.ts` for Node.js.
@@ -119,7 +118,7 @@ Note: vendoring is currently slow and poorly tested.
 Consider recommending [`pnpm`] to users of your library.
 It might be able to deduplicate vendored files across packages.
 
-[`grammy`]: https://github.com/grammyjs/grammY
+[`grammY`]: https://github.com/grammyjs/grammY
 [`pnpm`]: https://github.com/pnpm/pnpm#background
 [`ts-morph`]: https://github.com/dsherret/ts-morph
-[api reference]: https://doc.deno.land/https/deno.land/x/deno2node/src/mod.ts
+[API reference]: https://doc.deno.land/https/deno.land/x/deno2node/src/mod.ts
