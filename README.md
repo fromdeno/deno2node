@@ -37,7 +37,7 @@ $ deno install                             \
   --unstable                               \
   --allow-read                             \
   --allow-write                            \
-  --name deno2node
+  --name deno2node                         \
   https://deno.land/x/deno2node/src/cli.ts \
   <tsConfigFilePath>
 # Compile your project
