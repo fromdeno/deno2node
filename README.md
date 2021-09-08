@@ -1,6 +1,6 @@
 # deno2node
 
-Compile your [Deno] project to run under [Node.js].
+Compile your [Deno] project to run on [Node.js].
 
 ## CLI Usage from Deno
 
