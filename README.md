@@ -22,7 +22,7 @@ As a by-product of end-to-end testing, a Node.js build is also available:
 npm install --save-dev --save-prefix='~' deno2node
 ```
 
-Now put you can add a script to `package.json` so you can run it with `npm run build`:
+Now add a script to `package.json` so you can run it with `npm run build`:
 
 ```jsonc
 {
