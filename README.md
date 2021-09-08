@@ -33,7 +33,7 @@ Now add a script to `package.json` so you can run it with `npm run build`:
 }
 ```
 
-You can also run it directly:
+Instead of adding a script, you can also run it directly:
 
 ```sh
 npx deno2node <tsConfigFilePath>
