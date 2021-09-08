@@ -12,7 +12,7 @@ deno run --unstable --allow-read=. --allow-write=. \
 ```
 
 You need to substitute `<tsConfigFilePath>` by a path to your `tsconfig.json`
-file. `deno2node` passes it on to the built-in `tsc` for compiling your code.
+file. `deno2node` passes it on to the shipped `tsc` for compiling your code.
 
 ## CLI Usage from Node.js
 
