@@ -1,8 +1,8 @@
 // based on https://deno.land/x/cache@0.2.13
 
 // deno2node-friendly imports
-import { Sha256 } from "https://deno.land/std@0.97.0/hash/sha256.ts";
-import Path from "https://deno.land/std@0.97.0/node/path.ts";
+import { Sha256 } from "https://deno.land/std@0.106.0/hash/sha256.ts";
+import { path as Path } from "./deps.deno.ts";
 
 export interface Entry {
   readonly url: URL;
