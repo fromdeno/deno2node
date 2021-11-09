@@ -83,6 +83,9 @@ Some things are global in Deno, but not in Node.js. One example for this is
 `fetch`. Consequently, you need to _shim_ them, i.e. provide code that
 supplements the missing globals.
 
+> Note that `deno2node` does not actually touch global definitions. Instead, it
+> only injects import statements in the respective modules.
+
 For instance, you can use [`node-fetch`] as a substitue for the built-in `fetch`
 of Deno.
 
