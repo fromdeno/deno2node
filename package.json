@@ -1,6 +1,6 @@
 {
   "name": "deno2node",
-  "version": "0.8.0",
+  "version": "1.0.0",
   "description": "Transpiles Deno projects into `.js` and `.d.ts` for Node.js.",
   "type": "module",
   "bin": {
@@ -20,7 +20,7 @@
     "fmt": "npm run --silent clean && deno fmt --ignore=node_modules/",
     "lint": "npm run --silent clean && deno lint --ignore=node_modules/",
     "test": "npm run --silent prepare",
-    "prepare": "deno run --unstable --allow-read --allow-write='lib/' --allow-env src/cli.ts src/tsconfig.json",
+    "prepare": "deno run --allow-read --allow-write='lib/' --allow-env src/cli.ts src/tsconfig.json",
     "clean": "git clean -fXde !node_modules/"
   },
   "repository": {
@@ -40,13 +40,13 @@
     "url": "https://github.com/wojpawlik/deno2node/issues"
   },
   "engines": {
-    "node": "^12.20.0 || >=14.13.1",
-    "deno": "~1.11"
+    "deno": "~1.14",
+    "node": ">=14.13.1"
   },
   "dependencies": {
-    "ts-morph": "^11.0.0",
+    "ts-morph": "^12.0.0",
     "xregexp": "^5.0.2",
-    "zod": "^3.2.0"
+    "zod": "^3.8.2"
   },
   "devDependencies": {
     "@types/node": "^14.14.37"

@@ -11,7 +11,8 @@
     "moduleResolution": "node",
     "noEmitOnError": true,
     "outDir": "../lib/",
+    "skipLibCheck": true, // speed
     "strict": true,
-    "target": "ES2019"
+    "target": "ES2020"
   }
 }
