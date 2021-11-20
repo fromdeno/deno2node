@@ -1,7 +1,6 @@
 #!/usr/bin/env -S deno run --no-check --allow-read --allow-write --allow-env
-import { ts } from "./deps.deno.ts";
+import { getOwnVersion, ts } from "./deps.deno.ts";
 import { Context, deno2node, emit } from "./mod.ts";
-import { version } from "./version.ts";
 
 function printUsageAndExit() {
   console.error("Usage: deno2node <tsConfigFilePath>");
@@ -12,7 +11,7 @@ if (Deno.args.length !== 1) {
   printUsageAndExit();
 } else if (Deno.args[0].startsWith("-")) {
   if (Deno.args[0] === "-v" || Deno.args[0] === "--version") {
-    console.log("deno2node", version);
+    console.log("deno2node", await getOwnVersion());
     console.log("typescript", ts.version);
     Deno.exit(0);
   } else {
