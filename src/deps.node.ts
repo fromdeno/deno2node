@@ -3,8 +3,3 @@
 export { default as path } from "path";
 export { z } from "zod";
 export * from "ts-morph";
-
-export function getOwnVersion(): string {
-  const packageJson = require("./package.json");
-  return packageJson.version;
-}
