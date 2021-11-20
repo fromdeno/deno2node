@@ -3,4 +3,3 @@
 export { default as path } from "path";
 export { z } from "zod";
 export * from "ts-morph";
-export const tsMorphVersion = "12.2.0";

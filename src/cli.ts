@@ -1,5 +1,5 @@
 #!/usr/bin/env -S deno run --no-check --allow-read --allow-write --allow-env
-import { ts, tsMorphVersion } from "./deps.deno.ts";
+import { ts } from "./deps.deno.ts";
 import { Context, deno2node, emit } from "./mod.ts";
 import { version } from "./version.ts";
 
@@ -13,7 +13,6 @@ if (Deno.args.length !== 1) {
 } else if (Deno.args[0].startsWith("-")) {
   if (Deno.args[0] === "-v" || Deno.args[0] === "--version") {
     console.log("deno2node", version);
-    console.log("ts-morph", tsMorphVersion);
     console.log("typescript", ts.version);
     Deno.exit(0);
   } else {
