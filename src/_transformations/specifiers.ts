@@ -1,4 +1,4 @@
-import XR from "https://cdn.skypack.dev/xregexp@5.0.2?dts";
+import XR from "https://cdn.skypack.dev/xregexp@5.1.0?dts";
 
 // from https://github.com/npm/validate-npm-package-name/blob/80313b82a5c7e466556c3a7fb1cb7d7dab92f4be/index.js#L3
 const scopedPackage = new RegExp("^(?:@([^/]+?)[/])?([^/]+?)$");
