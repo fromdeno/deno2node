@@ -1,5 +1,5 @@
 #!/usr/bin/env -S deno run --no-check --allow-read --allow-write --allow-env
-import { path, ts } from "./deps.deno.ts";
+import { ts } from "./deps.deno.ts";
 import { Context, deno2node, emit } from "./mod.ts";
 
 function printUsageAndExit() {
@@ -11,8 +11,8 @@ if (Deno.args.length !== 1) {
   printUsageAndExit();
 } else if (Deno.args[0].startsWith("-")) {
   if (Deno.args[0] === "-v" || Deno.args[0] === "--version") {
-    const file = path.join(import.meta.url, "../..", "package.json");
-    const res = await fetch(file);
+    const url = new URL("../package.json", import.meta.url);
+    const res = await fetch(url);
     const packageJson = await res.json() as { version: string };
     console.log("deno2node", packageJson.version);
     console.log("typescript", ts.version);
