@@ -11,8 +11,7 @@ if (Deno.args.length !== 1) {
   printUsageAndExit();
 } else if (Deno.args[0].startsWith("-")) {
   if (Deno.args[0] === "-v" || Deno.args[0] === "--version") {
-    const thisDir = path.dirname(import.meta.url);
-    const file = path.join(thisDir, "..", "package.json");
+    const file = path.join(import.meta.url, "../..", "package.json");
     const res = await fetch(file);
     const packageJson = await res.json() as { version: string };
     console.log("deno2node", packageJson.version);
