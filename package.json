@@ -21,7 +21,8 @@
     "lint": "npm run --silent clean && deno lint --ignore=node_modules/",
     "test": "npm run --silent prepare",
     "prepare": "deno run --allow-read --allow-write='lib/' --allow-env src/cli.ts src/tsconfig.json",
-    "version": "echo \"export const version = \\\"$npm_package_version\\\";\" > src/version.ts && git add src/version.ts && git commit -m \"Update version to $npm_package_version\"",
+    "inject-version": "echo \"export const version = \\\"$npm_package_version\\\";\" > src/version.ts",
+    "version": "npm run inject-version && git add src/version.ts && git commit -m \"Update version to $npm_package_version\"",
     "clean": "git clean -fXde !node_modules/"
   },
   "repository": {
