@@ -42,6 +42,9 @@ function createShimmer(ctx: Context) {
 const isDenoSpecific = (sourceFile: SourceFile) =>
   sourceFile.getBaseNameWithoutExtension().toLowerCase().endsWith(".deno");
 
+const isNodeSpecific = (sourceFile: SourceFile) =>
+  sourceFile.getBaseNameWithoutExtension().toLowerCase().endsWith(".node");
+
 /**
  * Attempts to transform arbitrary `ctx.project` into a valid Node.js project:
  *
@@ -89,6 +92,8 @@ export async function deno2node(ctx: Context): Promise<void> {
   }
   await vendorEverything(ctx);
   for (const sourceFile of ctx.project.getSourceFiles()) {
-    shim(sourceFile);
+    if (!isNodeSpecific(sourceFile)) {
+      shim(sourceFile);
+    }
   }
 }
