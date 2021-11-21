@@ -25,6 +25,8 @@ jobs:
       run: |
         npm run prepare
         mv lib/ lib_by_deno
+    - run: ./src/cli.ts --version
+    - run: ./lib_by_deno/cli.js --version
     - name: Recreate Node.js build using Node.js
       run: |
         ./lib_by_deno/cli.js src/tsconfig.json
