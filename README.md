@@ -1,6 +1,8 @@
 <!-- deno-fmt-ignore-file -->
 # deno2node
 
+> Check out an improved README here: <https://github.com/wojpawlik/deno2node/blob/rework-reamde/README.md>
+
 Transpiles Deno projects into `.js` and `.d.ts` for Node.js.
 
 Uses [`ts-morph`] to rewrite imports, typecheck, and emit.
