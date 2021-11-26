@@ -166,7 +166,7 @@ greet();
 ```
 
 This technique has many uses. `deno2node` itself uses it to import from
-https://deno.land/x. A plugin of the Telegram bot framework [`grammY`] uses it
+https://deno.land/x. The Telegram bot framework [`grammY`] uses it
 to abstract away platform-specific APIs.
 
 ### Vendoring
