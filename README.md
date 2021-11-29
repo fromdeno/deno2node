@@ -7,7 +7,7 @@ Compile your [Deno] project to run on [Node.js].
 No installation needed. Simply `cd` into the directory of your project, and run:
 
 ```sh
-deno run --unstable --allow-read=. --allow-write=. \
+deno run --no-check --allow-read=. --allow-write=. \
     https://deno.land/x/deno2node/src/cli.ts <tsConfigFilePath>
 ```
 
