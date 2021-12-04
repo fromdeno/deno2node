@@ -1,62 +1,92 @@
-<!-- deno-fmt-ignore-file -->
 # deno2node
 
-Transpiles Deno projects into `.js` and `.d.ts` for Node.js.
+Compile your [Deno] project to run on [Node.js].
 
-Uses [`ts-morph`] to rewrite imports, typecheck, and emit.
+![Because Deno's tooling is way simpler than Node's](https://pbs.twimg.com/media/FBba11IXMAQB7pX?format=jpg)
 
-## Motivation
+## CLI Usage From Deno
 
-Writing libraries Deno-first
-makes it easy to publish to https://deno.land/x,
-and simplifies development experience:
-
-> Deno \[...\] requires no explicit transpilation step,
-> and ships with 0conf tooling that works well together.
-
-## CLI Usage
+No installation needed. Simply `cd` into the directory of your project, and run:
 
 ```sh
-$ deno run \
-  --no-check \
-  --unstable  \
-  --allow-read \
-  --allow-write=<outDir> \
-  https://deno.land/x/deno2node/src/cli.ts \
-  <tsConfigFilePath>
+deno run --no-check --allow-read=. --allow-write=. \
+  https://deno.land/x/deno2node/src/cli.ts <tsConfigFilePath>
 ```
 
-<!-- deno-fmt-ignore -->
-As a by-product of end-to-end testing,
-Node.js build is also available:
+You need to substitute `<tsConfigFilePath>` by a path to your `tsconfig.json`
+file. `deno2node` passes it on to the shipped `tsc` for compiling your code.
+
+## CLI Usage From Node.js
+
+As a by-product of end-to-end testing, a Node.js build is also available:
 
 ```sh
-$ npm install --save-dev --save-prefix='~' deno2node
+# New fearues or TypeScript upgrades
+# may alter output or diagnostics across minor versions.
+npm install --save-dev --save-prefix='~' deno2node
 ```
+
+Now add a script to `package.json` so you can run it with `npm run prepare`:
+
+```jsonc
+// @filename: package.json
+{
+  // yada yada ...
+  "scripts": {
+    "prepare": "deno2node <tsConfigFilePath>"
+  }
+}
+```
+
+You can also run it directly:
 
 ```sh
-$ deno2node <tsConfigFilePath>
+npx deno2node <tsConfigFilePath>
 ```
 
-`tsconfig.json` is used to specify `compilerOptions` and source `files` to `include`.
+## How It Works
 
-[API reference] explains transformations and configuration.
+There are three main steps to this.
 
-Note: output and diagnostics will change across minor versions.
+1. Transform the code base in-memory, by rewriting all import statements.
+2. Typecheck the code.
+3. Emit `.js` and `.d.ts` files. These files can directly be run by Node or
+   published on npm.
+
+`deno2node` uses [`ts-morph`] under the hood, which in turn builds on top of the
+TypeScript compiler `tsc`. Hence, you get the same behaviour as if you had
+developed your code directly for Node.
+
+`deno2node` can perform more powerful transpilation steps that make it flexible
+enough for most needs.
 
 ### Shimming
 
-To use Deno globals not available in Node.js,
-create and register a file exporting all the shims you need:
+Some things are global in Deno, but not in Node.js. One example for this is
+`fetch`. Consequently, you need to _shim_ them, i.e. provide code that
+supplements the missing globals.
+
+> Note that `deno2node` does not actually touch global definitions. Instead, it
+> only injects import statements in the respective modules.
+
+For instance, you can use [`node-fetch`] as a substitue for the built-in `fetch`
+of Deno.
 
 ```sh
-$ npm install deno.ns
+npm install node-fetch
 ```
 
-```js
+Now, create a file that exports the globals you need:
+
+```ts
 // @filename: src/shim.node.ts
-export * from "deno.ns";
+export { default as fetch } from "node-fetch";
+
+// more shims exported here
 ```
+
+Lastly, you need to register your shims in `tsconfig.json` so `deno2node` can
+inject them for you:
 
 ```jsonc
 // @filename: tsconfig.json
@@ -67,23 +97,63 @@ export * from "deno.ns";
 }
 ```
 
+If you simply want to shim all Deno globals, you can use the `deno.ns` package:
+
+```ts
+// @filename: src/shim.node.ts
+export * from "deno.ns";
+```
+
 ### Runtime-specific code
 
-When the provided transformations are not enough,
-you can provide a Node-specific (`<anything>.node.ts`)
-and a Deno-specific (`<anything>.deno.ts`) version of any file.
+In same cases you may want to have two different implementations, depending on
+whether you're running on Deno or on Node. When shimming is not enough, you can
+provide a Node-specific `<anything>.node.ts` and a Deno-specific
+`<anything>.deno.ts` version of any file. They need to reside next to each other
+in the same directory.
 
-`deno2node` will ignore the Deno version
-and rewrite imports to use the Node.js version instead.
+`deno2node` will ignore the Deno version and rewrite imports to use the Node.js
+version instead. Thus, the Deno-specific file will not be part of the build
+output.
 
-This technique has many uses.
-`deno2node` uses it to import from https://deno.land/x.
-[`grammy`] will probably also use it to abstract away platform-specific APIs.
+For example, provide `greet.deno.ts` for Deno:
+
+```ts
+// @filename: src/greet.deno.ts
+export function greet() {
+  console.log("Hello Deno!");
+  // access Deno-specific APIs here
+}
+```
+
+Now, provide `greet.node.ts` for Node:
+
+```ts
+// @filename: src/greet.node.ts
+export function greet() {
+  console.log("Hello Node!");
+  // access Node-specific APIs here
+}
+```
+
+Finally, use it in `foo.ts`:
+
+```ts
+import { greet } from "./platform.deno.ts";
+
+// Prints "Hello Deno!" on Deno,
+// and "Hello Node!" on Node:
+greet();
+```
+
+This technique has many uses. `deno2node` itself uses it to import from
+https://deno.land/std. The Telegram bot framework [`grammY`] uses it to abstract
+away platform-specific APIs.
 
 ### Vendoring
 
-If you import a module which has no npm equivalent,
-`deno2node` will vendor it in `vendorDir`, if specified:
+If you import a module which has no npm equivalent, `deno2node` can extract the
+code out of Deno's module cache, and put it in virtual `vendorDir`.
 
 ```jsonc
 // @filename: tsconfig.json
@@ -94,14 +164,23 @@ If you import a module which has no npm equivalent,
 }
 ```
 
-Vendoring requires `--allow-env`, to locate Deno cache.
+> Note that vendoring requires `--allow-env` in order to locate Deno cache.
 
-Note: vendoring is currently slow and poorly tested.
+Vendoring is still experimental, so be welcome to open an issue if you encounter
+a problem with it!
 
-Consider recommending [`pnpm`] to users of your library.
-It might be able to deduplicate vendored files across packages.
+Also, consider recommending [`pnpm`] to users of your library. It might be able
+to deduplicate vendored files across packages.
 
-[`grammY`]: https://github.com/grammyjs/grammY
+## API
+
+Confer the automatically generated [API Reference] if you want to use
+`deno2node` from code.
+
+[deno]: https://deno.land/
+[node.js]: https://nodejs.org/
+[`grammy`]: https://github.com/grammyjs/grammY
 [`pnpm`]: https://github.com/pnpm/pnpm#background
 [`ts-morph`]: https://github.com/dsherret/ts-morph
-[API reference]: https://doc.deno.land/https/deno.land/x/deno2node/src/mod.ts
+[`node-fetch`]: https://github.com/node-fetch/node-fetch
+[api reference]: https://doc.deno.land/https/deno.land/x/deno2node/src/mod.ts
