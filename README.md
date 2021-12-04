@@ -2,7 +2,7 @@
 
 Compile your [Deno] project to run on [Node.js].
 
-![Because Deno's tooling is simpler than Node's](https://pbs.twimg.com/media/FBba11IXMAQB7pX?format=jpg)
+![Because Deno's tooling is way simpler than Node's](https://pbs.twimg.com/media/FBba11IXMAQB7pX?format=jpg)
 
 ## CLI Usage from Deno
 
