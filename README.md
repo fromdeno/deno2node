@@ -60,9 +60,8 @@ There are three main steps to this.
 
 1. Transform the code base. This means:
    - Rewrite all import statements, e.g. to handle explicit vs. implicit file
-     extensions
-   - Reverse npm package transformations from `skypack.dev`, `esm.sh`,
-     `deno.land/std`, and `nest.land/std`.
+     extensions.
+   - Use bare specifiers in `std/node`, https://esm.sh and https://skypack.dev imports.
 2. Typecheck the code. You want that.
 3. Emit `.js` and `.d.ts` files. These files can directly be run by Node or
    published on npm.
