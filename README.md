@@ -2,13 +2,15 @@
 
 Compile your [Deno] project to run on [Node.js].
 
+![Because Deno's tooling is simpler than Node's](https://pbs.twimg.com/media/FBba11IXMAQB7pX?format=jpg)
+
 ## CLI Usage from Deno
 
 No installation needed. Simply `cd` into the directory of your project, and run:
 
 ```sh
 deno run --no-check --allow-read=. --allow-write=. \
-    https://deno.land/x/deno2node/src/cli.ts <tsConfigFilePath>
+  https://deno.land/x/deno2node/src/cli.ts <tsConfigFilePath>
 ```
 
 You need to substitute `<tsConfigFilePath>` by a path to your `tsconfig.json`
@@ -19,55 +21,37 @@ file. `deno2node` passes it on to the shipped `tsc` for compiling your code.
 As a by-product of end-to-end testing, a Node.js build is also available:
 
 ```sh
+# New fearues or TypeScript upgrades
+# may alter output or diagnostics across minor versions.
 npm install --save-dev --save-prefix='~' deno2node
 ```
 
-Now add a script to `package.json` so you can run it with `npm run build`:
+Now add a script to `package.json` so you can run it with `npm run prepare`:
 
 ```jsonc
+// @filename: package.json
 {
   // yada yada ...
   "scripts": {
-    "build": "deno2node <tsConfigFilePath>"
+    "prepare": "deno2node <tsConfigFilePath>"
   }
 }
 ```
 
-Instead of adding a script, you can also run it directly:
+You can also run it directly:
 
 ```sh
 npx deno2node <tsConfigFilePath>
 ```
 
-## Motivation
-
-Writing code for Deno is fun. It's so much simpler.
-
-If you have tried it, you know what we mean.
-
-If not, here is how you develop for Deno: Don't wait for TypeScript to
-transpile. Just run it. Don't wait for unit tests. They are truly fast. Linting?
-It is always instant. Zero configuration files. The tooling is standardised,
-built-in, and works well together. No `package.json` to tediously fill out. No
-more “did you try `rm -rf node_modules`?” Everything just works out of the box.
-What a relief.
-
-Try it, and you will know what we mean.
-
-## How it Works
+## How it works
 
 There are three main steps to this.
 
-1. Transform the code base. This means:
-   - Rewrite all import statements, e.g. to handle explicit vs. implicit file
-     extensions.
-   - Use bare specifiers in `std/node`, https://esm.sh and https://skypack.dev imports.
-2. Typecheck the code. You want that.
+1. Transform the code base in-memory, by rewriting all import statements.
+2. Typecheck the code.
 3. Emit `.js` and `.d.ts` files. These files can directly be run by Node or
    published on npm.
-
-Note that `deno2node` does all of this in memory. It does not touch your source
-files, and only writes the build artefacts to your disk.
 
 `deno2node` uses [`ts-morph`] under the hood, which in turn builds on top of the
 TypeScript compiler `tsc`. Hence, you get the same behaviour as if you had
@@ -95,7 +79,7 @@ npm install node-fetch
 Now, create a file that exports the globals you need:
 
 ```ts
-// src/shim.node.ts
+// @filename: src/shim.node.ts
 export { default as fetch } from "node-fetch";
 
 // more shims exported here
@@ -105,6 +89,7 @@ Lastly, you need to register your shims in `tsconfig.json` so `deno2node` can
 inject them for you:
 
 ```jsonc
+// @filename: tsconfig.json
 {
   "deno2node": {
     "shim": "src/shim.node.ts" // path to shim file, relative to tsconfig
@@ -112,15 +97,12 @@ inject them for you:
 }
 ```
 
-If you simply want to shim all Deno globals, you can install the `deno.ns`
-package. Then do:
+If you simply want to shim all Deno globals, you can use the `deno.ns` package:
 
 ```ts
-// src/shim.node.ts
+// @filename: src/shim.node.ts
 export * from "deno.ns";
 ```
-
-That package was specifically created for this use case.
 
 ### Runtime-specific code
 
@@ -137,7 +119,7 @@ output.
 For example, provide `greet.deno.ts` for Deno:
 
 ```ts
-// src/greet.deno.ts
+// @filename: src/greet.deno.ts
 export function greet() {
   console.log("Hello Deno!");
   // access Deno-specific APIs here
@@ -147,7 +129,7 @@ export function greet() {
 Now, provide `greet.node.ts` for Node:
 
 ```ts
-// src/greet.node.ts
+// @filename: src/greet.node.ts
 export function greet() {
   console.log("Hello Node!");
   // access Node-specific APIs here
@@ -165,18 +147,16 @@ greet();
 ```
 
 This technique has many uses. `deno2node` itself uses it to import from
-https://deno.land/x. The Telegram bot framework [`grammY`] uses it
-to abstract away platform-specific APIs.
+https://deno.land/std. The Telegram bot framework [`grammY`] uses it to abstract
+away platform-specific APIs.
 
 ### Vendoring
 
 If you import a module which has no npm equivalent, `deno2node` can extract the
-code out of Deno's module cache. On Deno, this directory can be used for
-vendoring (by specifying the `$DENO_DIR` environment variable), so `deno2node`
-calls it `vendorDir`.
+code out of Deno's module cache, and put it in virtual `vendorDir`.
 
 ```jsonc
-// tsconfig.json
+// @filename: tsconfig.json
 {
   "deno2node": {
     "vendorDir": "src/.deno2node/vendor/" // path within `rootDir`
@@ -196,9 +176,6 @@ to deduplicate vendored files across packages.
 
 Confer the automatically generated [API Reference] if you want to use
 `deno2node` from code.
-
-Note that updates to the `tsc` dependency will be performed in minor versions of
-`deno2node`, so output and diagnostics will change across them.
 
 [deno]: https://deno.land/
 [node.js]: https://nodejs.org/
