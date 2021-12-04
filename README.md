@@ -4,7 +4,7 @@ Compile your [Deno] project to run on [Node.js].
 
 ![Because Deno's tooling is way simpler than Node's](https://pbs.twimg.com/media/FBba11IXMAQB7pX?format=jpg)
 
-## CLI Usage from Deno
+## CLI Usage From Deno
 
 No installation needed. Simply `cd` into the directory of your project, and run:
 
@@ -16,7 +16,7 @@ deno run --no-check --allow-read=. --allow-write=. \
 You need to substitute `<tsConfigFilePath>` by a path to your `tsconfig.json`
 file. `deno2node` passes it on to the shipped `tsc` for compiling your code.
 
-## CLI Usage from Node.js
+## CLI Usage From Node.js
 
 As a by-product of end-to-end testing, a Node.js build is also available:
 
@@ -44,7 +44,7 @@ You can also run it directly:
 npx deno2node <tsConfigFilePath>
 ```
 
-## How it works
+## How It Works
 
 There are three main steps to this.
 
