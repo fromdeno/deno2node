@@ -40,7 +40,7 @@
     "url": "https://github.com/wojpawlik/deno2node/issues"
   },
   "engines": {
-    "deno": "~1.16",
+    "deno": "~1.17",
     "node": ">=14.13.1"
   },
   "dependencies": {
