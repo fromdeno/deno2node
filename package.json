@@ -44,7 +44,7 @@
     "node": ">=14.13.1"
   },
   "dependencies": {
-    "ts-morph": "^13.0.0",
+    "ts-morph": "^13.0.2",
     "xregexp": "^5.1.0",
     "zod": "^3.11.6"
   },
