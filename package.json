@@ -1,6 +1,6 @@
 {
   "name": "deno2node",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Transpiles Deno projects into `.js` and `.d.ts` for Node.js.",
   "type": "module",
   "bin": {
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wojpawlik/deno2node.git"
+    "url": "git+https://github.com/fromdeno/deno2node.git"
   },
   "homepage": "https://fromdeno.org",
   "keywords": [
@@ -36,9 +36,6 @@
   ],
   "author": "Wojciech Pawlik <woj.pawlik@gmail.com>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/wojpawlik/deno2node/issues"
-  },
   "engines": {
     "deno": "~1.17",
     "node": ">=14.13.1"
