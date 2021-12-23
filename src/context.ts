@@ -13,6 +13,7 @@ const Config = z.strictObject({
 interface Options {
   readonly tsConfigFilePath?: string;
   readonly compilerOptions?: ts.CompilerOptions;
+  readonly skipAddingFilesFromTsConfig?: boolean;
 }
 
 export class Context {
