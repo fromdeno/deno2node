@@ -21,7 +21,7 @@ file. `deno2node` passes it on to the shipped `tsc` for compiling your code.
 As a by-product of end-to-end testing, a Node.js build is also available:
 
 ```sh
-# New fearues or TypeScript upgrades
+# New features or TypeScript upgrades
 # may alter output or diagnostics across minor versions.
 npm install --save-dev --save-prefix='~' deno2node
 ```
