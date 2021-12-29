@@ -1,7 +1,8 @@
 {
+  "include": ["src/"],
   "deno2node": {
-    "vendorDir": ".deno2node/vendor/",
-    "shim": "./shim.node.ts"
+    "vendorDir": "src/.deno2node/vendor/",
+    "shim": "src/shim.node.ts"
   },
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
@@ -10,7 +11,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "noEmitOnError": true,
-    "outDir": "../lib/",
+    "outDir": "lib/",
     "skipLibCheck": true, // speed
     "strict": true,
     "target": "ES2020"

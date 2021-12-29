@@ -29,7 +29,7 @@ jobs:
     - run: ./lib_by_deno/cli.js --version
     - name: Recreate Node.js build using Node.js
       run: |
-        ./lib_by_deno/cli.js src/tsconfig.json
+        ./lib_by_deno/cli.js tsconfig.json
         mv lib/ lib_by_nodejs
     - name: Compare the builds
       run: git diff --no-index lib_by_deno/ lib_by_nodejs/
