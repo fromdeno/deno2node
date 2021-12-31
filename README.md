@@ -2,6 +2,8 @@
 
 Compile your [Deno] project to run on [Node.js].
 
+Quick setup: https://github.com/fromdeno/template/generate
+
 ![Because Deno's tooling is way simpler than Node's](https://pbs.twimg.com/media/FBba11IXMAQB7pX?format=jpg)
 
 ## CLI Usage From Deno
