@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "deno.ns": "^0.8.0",
-    "ts-morph": "^13.0.2",
+    "ts-morph": "^13.0.3",
     "xregexp": "^5.1.0",
     "zod": "^3.11.6"
   },
