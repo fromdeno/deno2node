@@ -41,6 +41,7 @@
     "node": ">=14.13.1"
   },
   "dependencies": {
+    "deno.ns": "^0.8.0",
     "ts-morph": "^13.0.2",
     "xregexp": "^5.1.0",
     "zod": "^3.11.6"
