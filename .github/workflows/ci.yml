@@ -21,6 +21,7 @@ jobs:
     - run: deno lint
     - run: deno fmt --check
     - run: npm ci --ignore-scripts
+    - run: deno cache src/cli.ts
     - name: Create Node.js build using Deno
       run: |
         npm run prepare
