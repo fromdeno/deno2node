@@ -57,7 +57,7 @@ export function entry(url: URL): Entry {
     "deps/",
     url.protocol.slice(0, -1),
     url.hostname,
-    hash
+    hash,
   );
   const metaPath = `${path}.metadata.json`;
   return { url, hash, path, metaPath };
