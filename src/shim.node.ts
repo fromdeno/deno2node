@@ -1,7 +1,7 @@
 // Node-only, see https://github.com/fromdeno/deno2node#shimming
 import { readFile } from "fs/promises";
 
-export * from "deno.ns";
+export * from "@deno/shim-deno";
 
 export async function fetch(fileUrl: URL) {
   if (fileUrl.protocol !== "file:") {
