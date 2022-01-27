@@ -26,12 +26,16 @@ function createShimmer(ctx: Context) {
   const shimFile = ctx.project.addSourceFileAtPath(
     ctx.resolve(ctx.config.shim),
   );
-  const namedImports = Array.from(shimFile.getExportedDeclarations().keys());
+  const shims = Array.from(shimFile.getExportedDeclarations().keys());
   return (sourceFile: SourceFile) => {
     if (sourceFile === shimFile) return;
+    const locals = new Set(
+      sourceFile.getLocals().map((l) => l.getEscapedName()),
+    );
     const index = sourceFile.getStatementsWithComments().length;
     sourceFile.insertImportDeclaration(index, {
-      namedImports,
+      // do not shim declared locals
+      namedImports: shims.filter((s) => !locals.has(s)),
       moduleSpecifier: `${
         sourceFile.getRelativePathAsModuleSpecifierTo(shimFile)
       }.js`,

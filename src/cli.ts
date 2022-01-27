@@ -2,28 +2,35 @@
 import { ts } from "./deps.deno.ts";
 import { Context, deno2node, emit } from "./mod.ts";
 import { getVersion, initializeProject } from "./init.ts";
+import { Command } from "https://deno.land/x/cliffy@v0.20.1/command/mod.ts";
 
-function printUsageAndExit() {
-  console.error("Usage: deno2node <tsConfigFilePath>");
-  Deno.exit(2);
-}
+const result = await new Command<void>()
+  .name("deno2node")
+  .description("Compile your Deno project to run on Node.js")
+  .option("-v --version", "Print version number and exit", {
+    standalone: true,
+    action: async () => {
+      console.log("deno2node", await getVersion());
+      console.log("typescript", ts.version);
+      Deno.exit(0);
+    },
+  })
+  .option("--init", "Initialize new deno2node project", {
+    standalone: true,
+    action: async () => {
+      await initializeProject();
+      Deno.exit(0);
+    },
+  })
+  .arguments<[string]>("<tsConfigFilePath>")
+  .option<{ noEmit: boolean }>("--noEmit", "Only check types, do not emit")
+  .parse(Deno.args);
 
-if (Deno.args.length !== 1) {
-  printUsageAndExit();
-} else if (Deno.args[0].startsWith("-")) {
-  if (Deno.args[0] === "-v" || Deno.args[0] === "--version") {
-    console.log("deno2node", await getVersion());
-    console.log("typescript", ts.version);
-    Deno.exit(0);
-  } else if (Deno.args[0] === "--init") {
-    await initializeProject();
-    Deno.exit(0);
-  } else {
-    printUsageAndExit();
-  }
-}
+const [tsConfigFilePath] = result.args;
+const { noEmit } = result.options;
 
-const ctx = new Context({ tsConfigFilePath: Deno.args[0] });
+const ctx = new Context({ tsConfigFilePath, compilerOptions: { noEmit } });
+
 await deno2node(ctx);
 const diagnostics = await emit(ctx.project);
 if (diagnostics.length !== 0) {
