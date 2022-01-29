@@ -2,9 +2,11 @@
 
 Compile your [Deno] project to run on [Node.js].
 
-Quick setup: https://github.com/fromdeno/template/generate
-
 ![Because Deno's tooling is way simpler than Node's](https://pbs.twimg.com/media/FBba11IXMAQB7pX?format=jpg)
+
+## Quick Setup
+
+Run `npx deno2node --init` in an empty directory.
 
 ## CLI Usage From Deno
 
@@ -71,20 +73,18 @@ supplements the missing globals.
 > Note that `deno2node` does not actually touch global definitions. Instead, it
 > only injects import statements in the respective modules.
 
-For instance, you can use [`node-fetch`] as a substitue for the built-in `fetch`
-of Deno.
-
-```sh
-npm install node-fetch
-```
+Install the packages providing the shims.
 
 Now, create a file that exports the globals you need:
 
 ```ts
 // @filename: src/shim.node.ts
-export { default as fetch } from "node-fetch";
+export { Blob } from "buffer";
+export { webcrypto as crypto } from "crypto";
 
-// more shims exported here
+export { fetch, File, FormData, Headers, Request, Response } from "undici";
+export { Deno } from "@deno/shim-deno";
+export { alert, confirm, prompt } from "@deno/shim-prompts";
 ```
 
 Lastly, you need to register your shims in `tsconfig.json` so `deno2node` can
@@ -97,13 +97,6 @@ inject them for you:
     "shim": "src/shim.node.ts" // path to shim file, relative to tsconfig
   }
 }
-```
-
-If you simply want to shim all Deno globals, you can use the `deno.ns` package:
-
-```ts
-// @filename: src/shim.node.ts
-export * from "deno.ns";
 ```
 
 ### Runtime-specific code
