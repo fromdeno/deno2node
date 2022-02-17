@@ -1,0 +1,20 @@
+{
+  "fmt": {
+    "files": {
+      "exclude": [
+        "./lib/",
+        "./node_modules/",
+        "./package-lock.json"
+      ]
+    }
+  },
+  "lint": {
+    "files": {
+      "exclude": [
+        "./lib/",
+        "./node_modules/",
+        "./package-lock.json"
+      ]
+    }
+  }
+}
