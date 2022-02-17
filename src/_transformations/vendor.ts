@@ -7,6 +7,10 @@ interface LocalFile {
   readonly url: URL;
 }
 
+function getVendoredPath(url: URL) {
+  return url.hostname + "/" + url.pathname;
+}
+
 const createVendorSpecifiersFn = (ctx: Context) =>
   ({ sourceFile, url }: LocalFile): cache.Entry[] => {
     if (!ctx.config.vendorDir) return [];
@@ -23,7 +27,7 @@ const createVendorSpecifiersFn = (ctx: Context) =>
         const cachedFile = cache.entry(newUrl);
         cachedFiles.push(cachedFile);
         const newSpecifierValue = sourceFile.getRelativePathAsModuleSpecifierTo(
-          ctx.resolve(ctx.config.vendorDir, newUrl.hostname, cachedFile.hash),
+          ctx.resolve(ctx.config.vendorDir, getVendoredPath(newUrl)),
         ) + ".js";
         statement.setModuleSpecifier(newSpecifierValue);
       }
@@ -32,15 +36,12 @@ const createVendorSpecifiersFn = (ctx: Context) =>
   };
 
 const createVendorFileFn = (ctx: Context) => {
-  const seen = new Set<string>();
   return async (file: cache.Entry): Promise<LocalFile[]> => {
-    if (seen.has(file.url.href)) return [];
-    seen.add(file.url.href);
     const vendoredPath = ctx.resolve(
       ctx.config.vendorDir!,
-      file.url.hostname,
-      `${file.hash}.ts`,
+      getVendoredPath(file.url),
     );
+    if (ctx.project.getSourceFile(vendoredPath)) return [];
     const sourceFile = ctx.project.createSourceFile(
       vendoredPath,
       await ctx.project.getFileSystem().readFile(file.path),

@@ -1,8 +1,8 @@
 #!/usr/bin/env -S deno run --no-check --allow-read --allow-write --allow-env
 import { ts } from "./deps.deno.ts";
+import { Command } from "./deps.vendor.ts";
 import { Context, deno2node, emit } from "./mod.ts";
 import { getVersion, initializeProject } from "./init.ts";
-import { Command } from "https://deno.land/x/cliffy@v0.20.1/command/mod.ts";
 
 const result = await new Command<void>()
   .name("deno2node")

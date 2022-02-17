@@ -3,3 +3,8 @@
 export { default as path } from "path";
 export { z } from "zod";
 export * from "ts-morph";
+
+import { createHash } from "crypto";
+
+export const sha256 = (data: string) =>
+  createHash("sha256").update(data).digest("hex");

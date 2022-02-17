@@ -15,6 +15,7 @@ jobs:
     - run: deno lint
     - run: deno fmt --check
     - run: deno cache src/cli.ts
+    - run: deno vendor src/deps.vendor.ts --output src/vendor/
     - name: Create Node.js build using Deno
       run: |
         npm run build
