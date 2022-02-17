@@ -17,10 +17,10 @@
     "lib/"
   ],
   "scripts": {
-    "fmt": "npm run --silent clean && deno fmt --ignore=node_modules/",
-    "lint": "npm run --silent clean && deno lint --ignore=node_modules/",
-    "test": "npm run --silent prepare",
-    "prepare": "deno run --allow-read --allow-write='lib/' --allow-env src/cli.ts tsconfig.json",
+    "fmt": "deno fmt",
+    "lint": "deno lint",
+    "test": "npm run --silent build",
+    "build": "deno run --allow-read --allow-write='lib/' --allow-env src/cli.ts tsconfig.json",
     "clean": "git clean -fXde !node_modules/"
   },
   "repository": {
@@ -37,16 +37,16 @@
   "author": "Wojciech Pawlik <woj.pawlik@gmail.com>",
   "license": "MIT",
   "engines": {
-    "deno": "~1.17",
     "node": ">=14.13.1"
   },
   "dependencies": {
-    "@deno/shim-deno": "^0.1.2",
+    "@deno/shim-deno": "<0.4.0",
     "ts-morph": "^13.0.3",
     "xregexp": "^5.1.0",
     "zod": "^3.11.6"
   },
   "devDependencies": {
-    "@types/node": "^14.14.37"
+    "@types/node": "^14.14.37",
+    "deno-bin": "~1.19.0"
   }
 }

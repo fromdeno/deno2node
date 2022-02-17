@@ -10,21 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: notiz-dev/github-action-json-property@v0.1.0
-      with:
-        path: package.json
-        prop_path: engines.deno
-      id: version
-    - uses: denoland/setup-deno@v1
-      with:
-        deno-version: ${{ steps.version.outputs.prop }}
+    - run: npm ci
+    - run: echo "$PWD/node_modules/.bin" >> $GITHUB_PATH
     - run: deno lint
     - run: deno fmt --check
-    - run: npm ci --ignore-scripts
     - run: deno cache src/cli.ts
     - name: Create Node.js build using Deno
       run: |
-        npm run prepare
+        npm run build
         mv lib/ lib_by_deno
     - run: ./src/cli.ts --version
     - run: ./lib_by_deno/cli.js --version
