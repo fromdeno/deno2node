@@ -15,13 +15,16 @@ jobs:
     - run: deno lint
     - run: deno fmt --check
     - run: deno cache src/cli.ts
+    - run: deno vendor src/deps.vendor.ts --output src/vendor/
     - name: Create Node.js build using Deno
+      timeout-minutes: 1
       run: |
         npm run build
         mv lib/ lib_by_deno
     - run: ./src/cli.ts --version
     - run: ./lib_by_deno/cli.js --version
     - name: Recreate Node.js build using Node.js
+      timeout-minutes: 1
       run: |
         ./lib_by_deno/cli.js tsconfig.json
         mv lib/ lib_by_nodejs

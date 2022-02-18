@@ -1,8 +1,6 @@
 // based on https://deno.land/x/cache@0.2.13
 
-// deno2node-friendly imports
-import { Sha256 } from "https://deno.land/std@0.122.0/hash/sha256.ts";
-import { path as Path } from "./deps.deno.ts";
+import { path as Path, sha256 } from "./deps.deno.ts";
 
 export interface Entry {
   readonly url: URL;
@@ -51,7 +49,7 @@ function getCacheDir(): string {
 
 export function entry(url: URL): Entry {
   const formatted = url.search ? `${url.pathname}?${url.search}` : url.pathname;
-  const hash = new Sha256().update(formatted).toString();
+  const hash = sha256(formatted);
   const path = Path.resolve(
     getCacheDir(),
     "deps/",

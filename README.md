@@ -154,12 +154,15 @@ code out of Deno's module cache, and put it in virtual `vendorDir`.
 // @filename: tsconfig.json
 {
   "deno2node": {
-    "vendorDir": "src/.deno2node/vendor/" // path within `rootDir`
+    "vendorDir": "src/vendor/" // path within `rootDir`
   }
 }
 ```
 
 > Note that vendoring requires `--allow-env` in order to locate Deno cache.
+
+Running `deno vendor src/deps.vendor.ts --output src/vendor/` will significantly
+speed up subsequent builds.
 
 Vendoring is still experimental, so be welcome to open an issue if you encounter
 a problem with it!
