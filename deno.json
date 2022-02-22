@@ -3,6 +3,7 @@
     "files": {
       "exclude": [
         "./lib/",
+        "./src/vendor/",
         "./node_modules/",
         "./package-lock.json"
       ]
@@ -12,6 +13,7 @@
     "files": {
       "exclude": [
         "./lib/",
+        "./src/vendor/",
         "./node_modules/",
         "./package-lock.json"
       ]
