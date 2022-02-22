@@ -20,6 +20,8 @@ deno run --no-check --allow-read=. --allow-write=. \
 You need to substitute `<tsConfigFilePath>` by a path to your `tsconfig.json`
 file. `deno2node` passes it on to the shipped `tsc` for compiling your code.
 
+If you don't already have a `package.json`, you may find [`dnt`] easier to use.
+
 ## CLI Usage From Node.js
 
 As a by-product of end-to-end testing, a Node.js build is also available:
@@ -147,8 +149,7 @@ away platform-specific APIs.
 
 ### Vendoring
 
-If you import a module which has no npm equivalent, `deno2node` can extract the
-code out of Deno's module cache, and put it in virtual `vendorDir`.
+To import a module which has no npm equivalent, first set up `vendorDir`.
 
 ```jsonc
 // @filename: tsconfig.json
@@ -159,10 +160,7 @@ code out of Deno's module cache, and put it in virtual `vendorDir`.
 }
 ```
 
-> Note that vendoring requires `--allow-env` in order to locate Deno cache.
-
-Running `deno vendor src/deps.vendor.ts --output src/vendor/` will significantly
-speed up subsequent builds.
+Then, populate it: `deno vendor src/deps.vendor.ts --output src/vendor/`.
 
 Vendoring is still experimental, so be welcome to open an issue if you encounter
 a problem with it!
@@ -177,6 +175,7 @@ Confer the automatically generated [API Reference] if you want to use
 
 [deno]: https://deno.land/
 [node.js]: https://nodejs.org/
+[`dnt`]: https://github.com/denoland/dnt
 [`grammy`]: https://github.com/grammyjs/grammY
 [`pnpm`]: https://github.com/pnpm/pnpm#background
 [`ts-morph`]: https://github.com/dsherret/ts-morph
