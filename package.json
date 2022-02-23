@@ -21,6 +21,7 @@
     "fmt": "deno fmt",
     "lint": "deno lint",
     "test": "npm run --silent build",
+    "prebuild": "deno vendor src/deps.vendor.ts --force --output src/vendor/",
     "build": "deno run --allow-read --allow-write='lib/' --allow-env src/cli.ts tsconfig.json",
     "clean": "git clean -fXde !node_modules/"
   },
