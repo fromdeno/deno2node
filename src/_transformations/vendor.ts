@@ -36,6 +36,7 @@ const createVendorSpecifiersFn = (ctx: Context) =>
   };
 
 const createVendorFileFn = (ctx: Context) => {
+  // deno-lint-ignore require-await
   return async (file: cache.Entry): Promise<LocalFile[]> => {
     const vendoredPath = ctx.resolve(
       ctx.config.vendorDir!,
@@ -44,7 +45,7 @@ const createVendorFileFn = (ctx: Context) => {
     if (ctx.project.getSourceFile(vendoredPath)) return [];
     const sourceFile = ctx.project.createSourceFile(
       vendoredPath,
-      await ctx.project.getFileSystem().readFile(file.path),
+      ctx.project.getFileSystem().readFileSync(file.path),
     );
     return [{ sourceFile, url: file.url }];
   };
