@@ -1,6 +1,6 @@
 {
   "name": "deno2node",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Transpiles Deno projects into `.js` and `.d.ts` for Node.js.",
   "type": "module",
   "bin": {
@@ -43,13 +43,13 @@
     "node": ">=14.13.1"
   },
   "dependencies": {
-    "@deno/shim-deno": "<0.4.0",
-    "ts-morph": "^13.0.3",
+    "@deno/shim-deno": "<0.5.0",
+    "ts-morph": "^14",
     "xregexp": "^5.1.0",
     "zod": "^3.11.6"
   },
   "devDependencies": {
     "@types/node": "^14.14.37",
-    "deno-bin": "~1.19.0"
+    "deno-bin": "~1.20"
   }
 }
