@@ -13,7 +13,7 @@ Run `npx deno2node --init` in an empty directory.
 No installation needed. Simply `cd` into the directory of your project, and run:
 
 ```sh
-deno run --no-check --allow-read=. --allow-write=. \
+deno run --no-prompt --allow-read=. --allow-write=. \
   https://deno.land/x/deno2node/src/cli.ts <tsConfigFilePath>
 ```
 
