@@ -45,8 +45,7 @@
   "dependencies": {
     "@deno/shim-deno": "<0.7.0",
     "ts-morph": "^15",
-    "xregexp": "^5.1.0",
-    "zod": "^3.11.6"
+    "xregexp": "^5.1.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.37",

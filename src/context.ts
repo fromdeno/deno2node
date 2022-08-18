@@ -1,14 +1,10 @@
-import { path, Project, ts, z } from "./deps.deno.ts";
+import { type Config, parse } from "./config.ts";
+import { path, Project, ts } from "./deps.deno.ts";
 
 const compilerOptions: ts.CompilerOptions = {
   strict: true,
   useDefineForClassFields: true,
 };
-
-const Config = z.strictObject({
-  shim: z.string().optional(),
-  vendorDir: z.string().optional(),
-});
 
 interface Options {
   readonly tsConfigFilePath?: string;
@@ -19,7 +15,7 @@ interface Options {
 export class Context {
   public baseDir: string;
   readonly project: Project;
-  readonly config: z.infer<typeof Config>;
+  readonly config: Config;
 
   /**
    * Synchronously loads `tsconfig.json` and `"files"`.
@@ -38,7 +34,7 @@ export class Context {
     const fs = this.project.getFileSystem();
     const result = ts.readConfigFile(tsConfigFilePath, fs.readFileSync);
     this.baseDir = path.resolve(tsConfigFilePath, "../");
-    this.config = Config.parse(result.config.deno2node ?? {});
+    this.config = parse(result.config.deno2node ?? {});
   }
 
   resolve(...pathSegments: string[]) {
