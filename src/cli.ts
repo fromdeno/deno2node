@@ -1,36 +1,30 @@
 #!/usr/bin/env -S deno run --no-check --allow-read --allow-write --allow-env
 import { ts } from "./deps.deno.ts";
-import { Command } from "./deps.vendor.ts";
 import { Context, deno2node, emit } from "./mod.ts";
 import { getVersion, initializeProject } from "./init.ts";
 
-const result = await new Command<void>()
-  .name("deno2node")
-  .description("Compile your Deno project to run on Node.js")
-  .option("-v --version", "Print version number and exit", {
-    standalone: true,
-    action: async () => {
-      console.log("deno2node", await getVersion());
-      console.log("typescript", ts.version);
-      Deno.exit(0);
-    },
-  })
-  .option("--init", "Initialize new deno2node project", {
-    standalone: true,
-    action: async () => {
-      await initializeProject();
-      Deno.exit(0);
-    },
-  })
-  .arguments<[string]>("<tsConfigFilePath>")
-  .option<{ noEmit: boolean }>("--noEmit", "Only check types, do not emit")
-  .option("--project", "", { hidden: true })
-  .parse(Deno.args);
+const { options, fileNames, errors } = ts.parseCommandLine(Deno.args);
+const tsConfigFilePath = options.project ?? fileNames[0] ?? "tsconfig.json";
 
-const [tsConfigFilePath] = result.args;
-const { noEmit } = result.options;
+if (errors.length) {
+  for (const error of errors) {
+    console.error(error.messageText);
+  }
+  Deno.exit(2);
+}
 
-const ctx = new Context({ tsConfigFilePath, compilerOptions: { noEmit } });
+if (options.version) {
+  console.log("deno2node", await getVersion());
+  console.log("typescript", ts.version);
+  Deno.exit(0);
+}
+
+if (options.init) {
+  await initializeProject();
+  Deno.exit(0);
+}
+
+const ctx = new Context({ tsConfigFilePath, compilerOptions: options });
 
 await deno2node(ctx);
 const diagnostics = await emit(ctx.project);

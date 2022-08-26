@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: npm ci
-    - run: echo "$PWD/node_modules/.bin" >> $GITHUB_PATH
+    - run: npm ci --ignore-scripts
+    - run: echo "$PWD/node_modules/.bin" >> "$GITHUB_PATH"
+    - run: deno cache src/cli.ts
     - run: deno lint
     - run: deno fmt --check
-    - run: deno cache src/cli.ts
     - name: Create Node.js build using Deno
       timeout-minutes: 1
       run: |
@@ -24,8 +24,7 @@ jobs:
     - name: Recreate Node.js build using Node.js
       timeout-minutes: 1
       run: |
-        ./lib_by_deno/cli.js tsconfig.json
-        mv lib/ lib_by_nodejs
+        ./lib_by_deno/cli.js --outDir lib_by_nodejs/
         ./lib_by_deno/cli.js --version > lib_by_nodejs/._version
     - name: Compare the builds
       run: git diff --no-index lib_by_deno/ lib_by_nodejs/
