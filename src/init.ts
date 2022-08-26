@@ -26,7 +26,7 @@ async function createPackageJson() {
       "!*/vendor/**/*.ts*",
     ],
     "scripts": {
-      "prepare": "deno2node tsconfig.json",
+      "prepare": "deno2node --project tsconfig.json",
       "clean": "git clean -fXde !node_modules/",
       "fmt": "deno fmt",
       "lint": "deno lint",

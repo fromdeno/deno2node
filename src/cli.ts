@@ -24,6 +24,7 @@ const result = await new Command<void>()
   })
   .arguments<[string]>("<tsConfigFilePath>")
   .option<{ noEmit: boolean }>("--noEmit", "Only check types, do not emit")
+  .option("--project", "", { hidden: true })
   .parse(Deno.args);
 
 const [tsConfigFilePath] = result.args;

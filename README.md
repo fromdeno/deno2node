@@ -14,7 +14,7 @@ No installation needed. Simply `cd` into the directory of your project, and run:
 
 ```sh
 deno run --no-prompt --allow-read=. --allow-write=. \
-  https://deno.land/x/deno2node/src/cli.ts <tsConfigFilePath>
+  https://deno.land/x/deno2node/src/cli.ts --project <tsConfigFilePath>
 ```
 
 You need to substitute `<tsConfigFilePath>` by a path to your `tsconfig.json`
@@ -39,15 +39,9 @@ Now add a script to `package.json` so you can run it with `npm run prepare`:
 {
   // yada yada ...
   "scripts": {
-    "prepare": "deno2node <tsConfigFilePath>"
+    "prepare": "deno2node --project <tsConfigFilePath>"
   }
 }
-```
-
-You can also run it directly:
-
-```sh
-npx deno2node <tsConfigFilePath>
 ```
 
 ## How It Works
