@@ -1,6 +1,6 @@
 # deno2node
 
-Compile your [Deno] project to run on [Node.js].
+`tsc` replacement for transpiling [Deno] libraries to run on [Node.js].
 
 ![Because Deno's tooling is way simpler than Node's](https://pbs.twimg.com/media/FBba11IXMAQB7pX?format=jpg)
 
@@ -8,40 +8,26 @@ Compile your [Deno] project to run on [Node.js].
 
 Run `npx deno2node --init` in an empty directory.
 
-## CLI Usage From Deno
-
-No installation needed. Simply `cd` into the directory of your project, and run:
-
-```sh
-deno run --no-prompt --allow-read=. --allow-write=. \
-  https://deno.land/x/deno2node/src/cli.ts --project <tsConfigFilePath>
-```
-
-You need to substitute `<tsConfigFilePath>` by a path to your `tsconfig.json`
-file. `deno2node` passes it on to the shipped `tsc` for compiling your code.
-
 If you don't already have a `package.json`, you may find [`dnt`] easier to use.
 
 ## CLI Usage From Node.js
-
-As a by-product of end-to-end testing, a Node.js build is also available:
 
 ```sh
 # New features or TypeScript upgrades
 # may alter output or diagnostics across minor versions.
 npm install --save-dev --save-prefix='~' deno2node
+npm set-script prepare deno2node
+# build
+npm run prepare
 ```
 
-Now add a script to `package.json` so you can run it with `npm run prepare`:
+## CLI Usage From Deno
 
-```jsonc
-// @filename: package.json
-{
-  // yada yada ...
-  "scripts": {
-    "prepare": "deno2node --project <tsConfigFilePath>"
-  }
-}
+`deno2node` is actually written Deno-first, to test it on its own source.
+
+```sh
+deno run --no-prompt --allow-read=. --allow-write=. \
+  https://deno.land/x/deno2node/src/cli.ts
 ```
 
 ## How It Works
@@ -138,7 +124,7 @@ greet();
 ```
 
 This technique has many uses. `deno2node` itself uses it to import from
-https://deno.land/std. The Telegram bot framework [`grammY`] uses it to abstract
+https://deno.land/x. The Telegram bot framework [`grammY`] uses it to abstract
 away platform-specific APIs.
 
 ### Vendoring
