@@ -15,16 +15,7 @@ jobs:
     - run: deno cache src/cli.ts
     - run: deno lint
     - run: deno fmt --check
-    - name: Create Node.js build using Deno
-      timeout-minutes: 1
-      run: |
-        npm run build
-        mv lib/ lib_by_deno
-        ./src/cli.ts --version > lib_by_deno/._version
-    - name: Recreate Node.js build using Node.js
-      timeout-minutes: 1
-      run: |
-        ./lib_by_deno/cli.js --outDir lib_by_nodejs/
-        ./lib_by_deno/cli.js --version > lib_by_nodejs/._version
-    - name: Compare the builds
-      run: git diff --no-index lib_by_deno/ lib_by_nodejs/
+    - run: npm run build
+    - run: |
+        lib/cli.js --outDir nodejs/
+        git diff --no-index lib/ nodejs/
