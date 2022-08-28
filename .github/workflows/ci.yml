@@ -16,6 +16,5 @@ jobs:
     - run: deno lint
     - run: deno fmt --check
     - run: npm run build
-    - run: |
-        lib/cli.js --outDir nodejs/
-        git diff --no-index lib/ nodejs/
+    - run: lib/cli.js --outDir nodejs/
+    - run: git diff --no-index lib/ nodejs/

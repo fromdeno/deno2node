@@ -24,10 +24,14 @@ if (options.init) {
   Deno.exit(0);
 }
 
+console.time("Loading tsconfig");
 const ctx = new Context({ tsConfigFilePath, compilerOptions: options });
+console.timeEnd("Loading tsconfig");
 
 await deno2node(ctx);
+console.time("Emitting");
 const diagnostics = await emit(ctx.project);
+console.timeEnd("Emitting");
 if (diagnostics.length !== 0) {
   console.info(ctx.project.formatDiagnosticsWithColorAndContext(diagnostics));
   console.info("TypeScript", ts.version);

@@ -61,9 +61,9 @@ const isNodeSpecific = (sourceFile: SourceFile) =>
  *    This can be used for re-exporting dependencies
  *    and other runtime-specific code.
  *
- * 3. Vendors remaining https?:// imports
+ * 3. Rewrites remaining https: imports to point
  *    into `vendorDir`, if specified:
- *    ```jsonc
+ *    ```json
  *    // @filename: tsconfig.json
  *    {
  *      "deno2node": {
@@ -74,7 +74,7 @@ const isNodeSpecific = (sourceFile: SourceFile) =>
  *
  * 4. Imports Node.js shims for Deno globals
  *    from [shim file], if specified:
- *    ```jsonc
+ *    ```json
  *    // @filename: tsconfig.json
  *    {
  *      "deno2node": {
@@ -87,6 +87,7 @@ const isNodeSpecific = (sourceFile: SourceFile) =>
  */
 export async function deno2node(ctx: Context): Promise<void> {
   const shim = createShimmer(ctx);
+  console.time("Basic transformations");
   for (const sourceFile of ctx.project.getSourceFiles()) {
     if (isDenoSpecific(sourceFile)) {
       ctx.project.removeSourceFile(sourceFile);
@@ -94,10 +95,15 @@ export async function deno2node(ctx: Context): Promise<void> {
     }
     transpileImportSpecifiers(sourceFile);
   }
+  console.timeEnd("Basic transformations");
+  console.time("Vendoring");
   await vendorEverything(ctx);
+  console.timeEnd("Vendoring");
+  console.time("Shimming");
   for (const sourceFile of ctx.project.getSourceFiles()) {
     if (!isNodeSpecific(sourceFile)) {
       shim(sourceFile);
     }
   }
+  console.timeEnd("Shimming");
 }
