@@ -33,12 +33,15 @@ function createShimmer(ctx: Context) {
       sourceFile.getLocals().map((l) => l.getEscapedName()),
     );
     const index = sourceFile.getStatementsWithComments().length;
+    const moduleSpecifier = "./" +
+      sourceFile.getRelativePathTo(shimFile).replace(
+        /tsx?$/,
+        "js",
+      );
     sourceFile.insertImportDeclaration(index, {
       // do not shim declared locals
       namedImports: shims.filter((s) => !locals.has(s)),
-      moduleSpecifier: `${
-        sourceFile.getRelativePathAsModuleSpecifierTo(shimFile)
-      }.js`,
+      moduleSpecifier,
     });
   };
 }
