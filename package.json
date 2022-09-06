@@ -20,8 +20,9 @@
   "scripts": {
     "fmt": "deno fmt",
     "lint": "deno lint",
-    "test": "npm run --silent build -- --noEmit",
-    "build": "deno run --no-prompt --allow-read --allow-write='lib/' --allow-env src/cli.ts tsconfig.json",
+    "build": "src/cli.ts",
+    "test": "src/cli.ts --noEmit",
+    "pretest": "scripts/pretest.ts",
     "clean": "git clean -fXde !node_modules/"
   },
   "repository": {
@@ -42,7 +43,7 @@
     "node": ">=14.13.1"
   },
   "dependencies": {
-    "@deno/shim-deno": "<0.7.0",
+    "@deno/shim-deno": "<0.10",
     "ts-morph": "^15",
     "xregexp": "^5.1.0"
   },

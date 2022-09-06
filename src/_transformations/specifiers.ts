@@ -7,6 +7,7 @@ const version = XR.tag("n")
   `^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$`;
 
 const services = [
+  XR.tag("x")`^npm:	(${scopedPackage})@${version}`,
   XR.tag("x")`^https://cdn\.skypack\.dev/	(${scopedPackage})@${version}\?`,
   XR.tag("x")`^https://esm\.sh/	(${scopedPackage})@${version}$`,
   XR.tag("x")`^https://deno\.land/	std@${version}/node/(\w+)\.ts$`,
