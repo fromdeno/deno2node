@@ -10,7 +10,7 @@ const services = [
   XR.tag("x")`^npm:	(${scopedPackage})@${version}`,
   XR.tag("x")`^https://cdn\.skypack\.dev/	(${scopedPackage})@${version}\?`,
   XR.tag("x")`^https://esm\.sh/	(${scopedPackage})@${version}$`,
-  XR.tag("x")`^https://deno\.land/	std@${version}/node/(\w+)\.ts$`,
+  XR.tag("x")`^https://deno\.land/	std(?:@${version})?/node/(\w+)\.ts$`,
   XR.tag("x")`^https://nest\.land/	std/node/${version}/(\w+)\.ts$`,
 ];
 

@@ -1,5 +1,6 @@
+import path from "https://deno.land/std/node/path.ts";
 import { type Config, parse } from "./config.ts";
-import { path, Project, ts } from "./deps.deno.ts";
+import { Project, ts } from "./deps.deno.ts";
 
 const compilerOptions: ts.CompilerOptions = {
   strict: true,
