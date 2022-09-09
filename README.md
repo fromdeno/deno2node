@@ -1,6 +1,6 @@
 # deno2node
 
-Drop-in `tsc` replacement for transpiling [Deno] libraries to run on [Node.js].
+`tsc` replacement for transpiling [Deno] libraries to run on [Node.js].
 Essentially a thin wrapper around `tsc` to work on Deno code.
 
 ![Because Deno's tooling is way simpler than
