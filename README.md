@@ -1,29 +1,52 @@
 # deno2node
 
-`tsc` replacement for transpiling [Deno] libraries to run on [Node.js].
+Drop-in `tsc` replacement for transpiling [Deno] libraries to run on [Node.js].
+Essentially a thin wrapper around `tsc` to work on Deno code.
 
-![Because Deno's tooling is way simpler than Node's](https://pbs.twimg.com/media/FBba11IXMAQB7pX?format=jpg)
+![Because Deno's tooling is way simpler than
+Node's](https://pbs.twimg.com/media/FBba11IXMAQB7pX?format=jpg)
 
 ## Quick Setup
 
-Run `npx deno2node --init` in an empty directory.
+> If you don't already have a `package.json`, you may find [`dnt`] easier to
+> use.
 
-If you don't already have a `package.json`, you may find [`dnt`] easier to use.
+Run `npx deno2node --init` in an empty directory.
 
 ## CLI Usage From Node.js
 
+First, install `deno2node`.
+
 ```sh
-# New features or TypeScript upgrades
-# may alter output or diagnostics across minor versions.
-npm install --save-dev --save-prefix='~' deno2node
+npm install --save-dev deno2node
+```
+
+Next, run it with `npx`:
+
+```sh
+npx deno2node
+```
+
+It is useful to put `deno2node` in a prepare script. You can configure this by
+running the following command.
+
+```sh
 npm set-script prepare deno2node
-# build
+```
+
+You can now simply run
+
+```sh
 npm run prepare
 ```
 
+to run `deno2node`. In addition, this will be executed automatically when you
+run `npm install`.
+
 ## CLI Usage From Deno
 
-`deno2node` is actually written Deno-first, to test it on its own source.
+`deno2node` is actually a Deno project that compiles itself to run on Node.js.
+(This is a great way to test the tool, too.)
 
 ```sh
 deno run --no-prompt --allow-read=. --allow-write=. \
@@ -153,11 +176,22 @@ to deduplicate vendored files across packages.
 Confer the automatically generated [API Reference] if you want to use
 `deno2node` from code.
 
+## Versioning
+
+Similar to `tsc`, new features or TypeScript upgrades may alter output or
+diagnostics of the CLI across minor versions. While this usually does not break
+anything, you may still want to pin the minor version, hence only allowing patch
+updates. You can do this by adding a `~` prefix to the version in your
+`package.json` file.
+
+```sh
+npm install --save-dev --save-prefix='~' deno2node
+```
+
 [deno]: https://deno.land/
 [node.js]: https://nodejs.org/
 [`dnt`]: https://github.com/denoland/dnt
 [`grammy`]: https://github.com/grammyjs/grammY
 [`pnpm`]: https://github.com/pnpm/pnpm#background
 [`ts-morph`]: https://github.com/dsherret/ts-morph
-[`node-fetch`]: https://github.com/node-fetch/node-fetch
 [api reference]: https://doc.deno.land/https/deno.land/x/deno2node/src/mod.ts
