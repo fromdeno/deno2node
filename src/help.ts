@@ -7,7 +7,7 @@ ${bold("COMMON COMMANDS")}
   ${blue("deno2node")}
   Compiles the current project (tsconfig.json in the working directory.)
 
-  ${blue("deno2node <tsconfig.json>")}
+  ${blue("deno2node --project <tsconfig.json>")}
   Compiles the current project with the specified tsconfig.json file.
 
   ${blue("deno2node --init")}
