@@ -3,6 +3,7 @@ import { type Config, parse } from "./config.ts";
 import { Project, ts } from "./deps.deno.ts";
 
 const compilerOptions: ts.CompilerOptions = {
+  removeComments: false,
   strict: true,
   useDefineForClassFields: true,
 };

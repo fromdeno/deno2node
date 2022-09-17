@@ -1,4 +1,5 @@
 import type { Diagnostic, MemoryEmitResultFile, Project } from "./deps.deno.ts";
+import { stripJsComments } from "./_transformations/comments.ts";
 
 const anyShebang = /^#![^\n]*\n/;
 const denoShebang = /^#!\/usr\/bin\/env -S deno run\b[^\n]*\n/;
@@ -20,6 +21,7 @@ async function markExecutableIfNeeded(file: MemoryEmitResultFile) {
  * Emits project to the filesystem.
  * Returns diagnostics.
  *
+ * Removes comments from output JS if source maps are disabled.
  * Replaces Deno shebang with Node.js shebang in JS outputs.
  * Removes shebangs from non-JS outputs.
  * Then `chmod +x`'s outputs with Node.js shebang.
@@ -28,6 +30,7 @@ export async function emit(project: Project): Promise<Diagnostic[]> {
   const result = project.emitToMemory();
   const files = result.getFiles();
   files.forEach(transpileShebang);
+  stripJsComments(files);
   await result.saveFiles();
   await Promise.all(files.map(markExecutableIfNeeded));
   const preEmitDiagnostics = project.getPreEmitDiagnostics();
