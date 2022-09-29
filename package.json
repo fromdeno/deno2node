@@ -1,6 +1,6 @@
 {
   "name": "deno2node",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "`tsc` replacement for transpiling Deno libraries to run on Node.js.",
   "type": "module",
   "bin": {
@@ -45,12 +45,12 @@
   "dependencies": {
     "@deno/shim-deno": "<0.10",
     "strip-comments": "2.0.1",
-    "ts-morph": "^15",
+    "ts-morph": "^16.0.0",
     "xregexp": "^5.1.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.37",
     "@types/strip-comments": "2.0.1",
-    "deno-bin": "~1.23"
+    "deno-bin": "~1.26.0"
   }
 }
