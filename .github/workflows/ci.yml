@@ -12,6 +12,7 @@ jobs:
     - uses: actions/checkout@v2
     - run: npm ci --ignore-scripts
     - run: echo "$PWD/node_modules/.bin" >> "$GITHUB_PATH"
+    - run: npm rebuild deno-bin
     - run: deno cache src/cli.ts
     - run: deno lint
     - run: src/cli.ts

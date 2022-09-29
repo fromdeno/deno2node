@@ -11,6 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: npm ci --ignore-scripts
+    - run: npm rebuild deno-bin
     - run: npm run build
     - name: Publish to npm
       run: |
