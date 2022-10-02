@@ -13,7 +13,6 @@
     "lib": "lib"
   },
   "files": [
-    "src/**/*.ts",
     "lib/",
     "!*/vendor/**/*.ts*"
   ],
@@ -49,7 +48,6 @@
   },
   "devDependencies": {
     "@types/node": "^14.14.37",
-    "@types/strip-comments": "2.0.1",
     "deno-bin": "~1.26.0"
   }
 }
