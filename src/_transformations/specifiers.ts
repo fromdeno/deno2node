@@ -1,14 +1,15 @@
 import XR from "https://cdn.skypack.dev/xregexp@5.1.0?dts";
 
+const path = /^\/[\w/.-]+$/;
 const scopedPackage = /^(?:@[\w.-]+\/)?[\w.-]+$/;
 const version = /^[^/?]+$/;
 
 const services = [
-  XR.tag("x")`^npm:	(${scopedPackage})(?:@${version})?$`,
+  XR.tag("x")`^npm:	(${scopedPackage})(?:@${version})?(${path})?$`,
   XR.tag(
     "x",
-  )`^https://cdn\.skypack\.dev/	(${scopedPackage})(?:@${version})?\?`,
-  XR.tag("x")`^https://esm\.sh/	(${scopedPackage})(?:@${version})?$`,
+  )`^https://cdn\.skypack\.dev/	(${scopedPackage})(?:@${version})?(${path})?\?`,
+  XR.tag("x")`^https://esm\.sh/	(${scopedPackage})(?:@${version})?(${path})?$`,
   XR.tag("x")`^https://deno\.land/	std(?:@${version})?/node/([\w/]+)\.ts$`,
   XR.tag("x")`^https://nest\.land/	std/node/${version}/([\w/]+)\.ts$`,
 ];
@@ -16,7 +17,9 @@ const services = [
 const transpileHttpsImport = (specifier: string) => {
   for (const service of services) {
     const match = service.exec(specifier);
-    if (match) return match[1];
+    if (match === null) continue;
+    const [, pkg, path = ""] = match;
+    return pkg + path;
   }
   return specifier;
 };
