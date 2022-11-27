@@ -1,0 +1,22 @@
+name: Update
+
+on:
+  schedule:
+    - cron: '33 12 * * *'
+  push:
+    paths:
+      - .github/workflows/update.yml
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # to trigger release workflow
+          ssh-key: ${{ secrets.SSH_DEPLOY_KEY }}
+      - uses: fregante/setup-git-user@v1
+      - run: npm ci
+      - run: scripts/update.sh
+      - run: git push --follow-tags
+        if: ${{ github.event_name == 'schedule' }}
