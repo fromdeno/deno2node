@@ -9,10 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - run: npm ci --ignore-scripts
-    - run: echo "$PWD/node_modules/.bin" >> "$GITHUB_PATH"
     - run: npm rebuild deno-bin
+    - run: echo "$PWD/node_modules/deno-bin/bin" >> "$GITHUB_PATH"
     - run: deno cache src/cli.ts
     - run: deno lint
     - run: src/cli.ts
