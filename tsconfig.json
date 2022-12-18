@@ -1,7 +1,6 @@
 {
   "include": ["src/"],
   "deno2node": {
-    "vendorDir": "src/vendor/",
     "shim": "src/shim.node.ts"
   },
   "compilerOptions": {
