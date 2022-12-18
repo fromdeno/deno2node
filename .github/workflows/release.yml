@@ -9,13 +9,13 @@ jobs:
   npm:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - run: npm ci --ignore-scripts
     - run: npm rebuild deno-bin
     - run: npm run build
     - name: Publish to npm
       run: |
-        npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
+        npm config set //registry.npmjs.org/:_authToken '${NPM_TOKEN}'
         npm publish --ignore-scripts
       env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -2,10 +2,8 @@ name: Update
 
 on:
   schedule:
-    - cron: '33 12 * * *'
-  push:
-    paths:
-      - .github/workflows/update.yml
+    # 30 min after deno-bin
+    - cron: '30 12 * * SAT'
 
 jobs:
   update:
@@ -19,4 +17,3 @@ jobs:
       - run: npm ci
       - run: scripts/update.sh
       - run: git push --follow-tags
-        if: ${{ github.event_name == 'schedule' }}
