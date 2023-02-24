@@ -1,4 +1,4 @@
-import path from "https://deno.land/std/node/path.ts";
+import path from "https://deno.land/std@0.140.0/node/path.ts";
 import { type Config, parse } from "./config.ts";
 import { Project, ts } from "./deps.deno.ts";
 
