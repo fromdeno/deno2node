@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --no-prompt --allow-read=. --allow-write=.
+#!/usr/bin/env -S deno run --no-npm --no-prompt --allow-read=. --allow-write=.
 import { ts } from "./deps.deno.ts";
 import { getHelpText } from "./help.ts";
 import { getVersion, initializeProject } from "./init.ts";
