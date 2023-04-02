@@ -1,17 +1,16 @@
 # deno2node
 
 `tsc` replacement for transpiling [Deno] libraries to run on [Node.js].
-Essentially a thin wrapper around `tsc` to work on Deno code.
 
 ![Because Deno's tooling is way simpler than
 Node's](https://pbs.twimg.com/media/FBba11IXMAQB7pX?format=jpg)
 
 ## Quick Setup
 
-> If you don't already have a `package.json`, you may find [`dnt`] easier to
-> use.
-
 Run `npx deno2node --init` in an empty directory.
+
+> **Note** If you don't already have a `package.json`, you may find [`dnt`]
+> easier to use.
 
 ## CLI Usage From Node.js
 
@@ -21,11 +20,7 @@ First, install `deno2node`.
 npm install --save-dev deno2node
 ```
 
-Next, run it with `npx`:
-
-```sh
-npx deno2node
-```
+Then, create a [`tsconfig.json`], if you don't have one already.
 
 It is useful to put `deno2node` in a prepare script. You can configure this by
 running the following command.
@@ -34,14 +29,16 @@ running the following command.
 npm set-script prepare deno2node
 ```
 
-You can now simply run
+You can now invoke `deno2node` by running
 
 ```sh
 npm run prepare
 ```
 
-to run `deno2node`. In addition, this will be executed automatically when you
-run `npm install`.
+It will alse be executed automatically when you run `npm install`.
+
+> **Note** Deno can run many Node packages out of the box:
+> https://deno.land/manual/node
 
 ## CLI Usage From Deno
 
@@ -75,7 +72,7 @@ Some things are global in Deno, but not in Node.js. One example for this is
 `fetch`. Consequently, you need to _shim_ them, i.e. provide code that
 supplements the missing globals.
 
-> Note that `deno2node` does not actually touch global definitions. Instead, it
+> **Note** `deno2node` does not actually touch global definitions. Instead, it
 > only injects import statements in the respective modules.
 
 Install the packages providing the shims.
@@ -194,4 +191,5 @@ npm install --save-dev --save-prefix='~' deno2node
 [`grammy`]: https://github.com/grammyjs/grammY
 [`pnpm`]: https://github.com/pnpm/pnpm#background
 [`ts-morph`]: https://github.com/dsherret/ts-morph
+[`tsconfig.json`]: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
 [api reference]: https://doc.deno.land/https/deno.land/x/deno2node/src/mod.ts
