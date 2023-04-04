@@ -4,6 +4,7 @@ import { Context } from "./context.ts";
 import { Node, SourceFile } from "./deps.deno.ts";
 import { transpileSpecifier } from "./_transformations/specifiers.ts";
 import { vendorEverything } from "./_transformations/vendor.ts";
+import { shimEverything } from "./_transformations/shim.ts";
 
 function transpileImportSpecifiers(sourceFile: SourceFile) {
   for (const statement of sourceFile.getStatements()) {
@@ -19,38 +20,8 @@ function transpileImportSpecifiers(sourceFile: SourceFile) {
   }
 }
 
-function createShimmer(ctx: Context) {
-  if (ctx.config.shim === undefined) {
-    return () => {};
-  }
-  const shimFile = ctx.project.addSourceFileAtPath(
-    ctx.resolve(ctx.config.shim),
-  );
-  const shims = Array.from(shimFile.getExportedDeclarations().keys());
-  return (sourceFile: SourceFile) => {
-    if (sourceFile === shimFile) return;
-    const locals = new Set(
-      sourceFile.getLocals().map((l) => l.getEscapedName()),
-    );
-    const index = sourceFile.getStatementsWithComments().length;
-    const moduleSpecifier = "./" +
-      sourceFile.getRelativePathTo(shimFile).replace(
-        /tsx?$/,
-        "js",
-      );
-    sourceFile.insertImportDeclaration(index, {
-      // do not shim declared locals
-      namedImports: shims.filter((s) => !locals.has(s)),
-      moduleSpecifier,
-    });
-  };
-}
-
 const isDenoSpecific = (sourceFile: SourceFile) =>
   sourceFile.getBaseNameWithoutExtension().toLowerCase().endsWith(".deno");
-
-const isNodeSpecific = (sourceFile: SourceFile) =>
-  sourceFile.getBaseNameWithoutExtension().toLowerCase().endsWith(".node");
 
 /**
  * Attempts to transform arbitrary `ctx.project` into a valid Node.js project:
@@ -89,7 +60,6 @@ const isNodeSpecific = (sourceFile: SourceFile) =>
  * [shim file]: https://github.com/wojpawlik/deno2node/blob/main/src/shim.node.ts
  */
 export async function deno2node(ctx: Context): Promise<void> {
-  const shim = createShimmer(ctx);
   console.time("Basic transformations");
   for (const sourceFile of ctx.project.getSourceFiles()) {
     if (isDenoSpecific(sourceFile)) {
@@ -99,14 +69,6 @@ export async function deno2node(ctx: Context): Promise<void> {
     transpileImportSpecifiers(sourceFile);
   }
   console.timeEnd("Basic transformations");
-  console.time("Vendoring");
   await vendorEverything(ctx);
-  console.timeEnd("Vendoring");
-  console.time("Shimming");
-  for (const sourceFile of ctx.project.getSourceFiles()) {
-    if (!isNodeSpecific(sourceFile)) {
-      shim(sourceFile);
-    }
-  }
-  console.timeEnd("Shimming");
+  shimEverything(ctx);
 }
