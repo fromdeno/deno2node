@@ -1,4 +1,5 @@
 import type { Diagnostic, MemoryEmitResultFile, Project } from "./deps.deno.ts";
+import { chmod } from "node:fs/promises";
 
 const anyShebang = /^#![^\n]*\n/;
 const denoShebang = /^#!\/usr\/bin\/env -S deno run\b[^\n]*\n/;
@@ -11,9 +12,8 @@ function transpileShebang(file: MemoryEmitResultFile) {
 }
 
 async function markExecutableIfNeeded(file: MemoryEmitResultFile) {
-  if (Deno.build.os === "windows") return;
   if (!file.text.startsWith(nodeShebang)) return;
-  await Deno.chmod(file.filePath, 0o755);
+  await chmod(file.filePath, 0o755);
 }
 
 /**
