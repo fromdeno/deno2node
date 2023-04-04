@@ -1,10 +1,12 @@
 #!/usr/bin/env -S deno run --no-check --allow-read --allow-write='.'
+import fs from "node:fs/promises";
+
 const shimFile = "// See https://github.com/fromdeno/deno2node#shimming";
 const gitignore = "/lib/\n/node_modules/\n/src/vendor/";
 
 async function download(url: URL, target: string) {
   const response = await fetch(url);
-  await Deno.writeTextFile(target, await response.text());
+  await fs.writeFile(target, await response.text(), { flag: "wx" });
 }
 
 export async function getVersion(): Promise<string> {
@@ -21,7 +23,6 @@ async function createPackageJson() {
     "exports": "./lib/mod.js",
     "typings": "./lib/mod.d.ts",
     "files": [
-      "src/**/*.ts",
       "lib/",
       "!*/vendor/**/*.ts*",
     ],
@@ -35,19 +36,21 @@ async function createPackageJson() {
       "deno2node": `~${await getVersion()}`,
     },
   };
-  await Deno.writeTextFile("package.json", JSON.stringify(pkg, null, 2));
+  await fs.writeFile("package.json", JSON.stringify(pkg, null, 2), {
+    flag: "wx",
+  });
 }
 
 export async function initializeProject() {
   const denoJsonUrl = new URL("../deno.json", import.meta.url);
   const tsconfigUrl = new URL("../tsconfig.json", import.meta.url);
-  await Deno.mkdir("src/");
+  await fs.mkdir("src/");
   await Promise.all([
     createPackageJson(),
     download(denoJsonUrl, "deno.json"),
     download(tsconfigUrl, "tsconfig.json"),
-    Deno.writeTextFile(".gitignore", gitignore),
-    Deno.writeTextFile("src/shim.node.ts", shimFile),
+    fs.writeFile(".gitignore", gitignore, { flag: "wx" }),
+    fs.writeFile("src/shim.node.ts", shimFile, { flag: "wx" }),
   ]);
 }
 
