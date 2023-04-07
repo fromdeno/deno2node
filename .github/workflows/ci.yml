@@ -11,10 +11,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - run: npm ci --ignore-scripts
-    - run: npm rebuild deno-bin
-    - run: echo "$PWD/node_modules/deno-bin/bin" >> "$GITHUB_PATH"
+    - run: echo "$PWD/node_modules/.bin" >> "$GITHUB_PATH"
     - run: deno cache --no-npm src/cli.ts
     - run: deno lint
+
     - run: src/cli.ts
     - run: lib/cli.js --outDir nodejs/
     - run: git diff --no-index lib/ nodejs/
+
+    - run: deno test --allow-read=.
+    - run: fdt lib/**/*.test.js

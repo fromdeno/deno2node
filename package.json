@@ -14,7 +14,7 @@
   },
   "files": [
     "lib/",
-    "!*/vendor/**/*.ts*"
+    "!lib/**/*.test.*"
   ],
   "scripts": {
     "fmt": "deno fmt",
@@ -22,6 +22,7 @@
     "build": "src/cli.ts",
     "test": "src/cli.ts --noEmit",
     "pretest": "scripts/pretest.ts",
+    "postbuild": "fdt lib/**/*.test.js",
     "clean": "git clean -fXde !node_modules/"
   },
   "repository": {
@@ -46,7 +47,8 @@
     "xregexp": "^5.1.0"
   },
   "devDependencies": {
-    "@types/node": "^14.14.37",
+    "@fromdeno/test": "^0.3.0",
+    "@types/node": "^18.15.11",
     "deno-bin": "~1.32.2"
   }
 }

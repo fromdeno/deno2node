@@ -3,8 +3,8 @@
   "deno.lint": true,
   "deno.unstable": false,
   "deno.path": "node_modules/.bin/deno",
-  "deno.suggest.imports.hosts": {
-    "https://deno.land": true
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
   },
   "editor.defaultFormatter": "denoland.vscode-deno",
   "editor.formatOnSave": true

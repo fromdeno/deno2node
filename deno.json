@@ -1,18 +1,6 @@
 {
   "lock": false,
-  "fmt": {
-    "files": {
-      "exclude": [
-        "./lib/",
-        "./package-lock.json"
-      ]
-    }
-  },
-  "lint": {
-    "files": {
-      "exclude": [
-        "./lib/"
-      ]
-    }
-  }
+  "fmt": { "files": { "exclude": ["lib/", "package-lock.json"] } },
+  "lint": { "files": { "exclude": ["lib/"] } },
+  "test": { "files": { "include": ["src/"] } }
 }

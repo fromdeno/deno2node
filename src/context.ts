@@ -16,8 +16,8 @@ interface Options {
 
 export class Context {
   public baseDir: string;
+  public config: Config;
   readonly project: Project;
-  readonly config: Config;
 
   /**
    * Synchronously loads `tsconfig.json` and `"files"`.
@@ -28,12 +28,12 @@ export class Context {
       compilerOptions,
       ...options,
     });
+    const fs = this.project.getFileSystem();
     if (tsConfigFilePath === undefined) {
-      this.baseDir = Deno.cwd();
+      this.baseDir = fs.getCurrentDirectory();
       this.config = {};
       return;
     }
-    const fs = this.project.getFileSystem();
     const result = ts.readConfigFile(tsConfigFilePath, fs.readFileSync);
     this.baseDir = path.resolve(tsConfigFilePath, "../");
     this.config = parse(result.config.deno2node ?? {});
