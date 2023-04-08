@@ -1,5 +1,5 @@
 // Node-only, see https://github.com/fromdeno/deno2node#shimming
-import { test } from "@fromdeno/test";
+import { test } from "@deno/shim-deno-test";
 import { chmod, readFile } from "node:fs/promises";
 import process from "node:process";
 import { isatty } from "node:tty";
@@ -13,6 +13,7 @@ export const Deno = {
   chmod,
   exit: process.exit,
   isatty,
+  noColor: process.env.NO_COLOR !== undefined,
   stdout: { rid: process.stdout.fd },
   test,
 };

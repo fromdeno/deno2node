@@ -43,11 +43,12 @@
     "node": ">=14.13.1"
   },
   "dependencies": {
+    "@deno/shim-deno-test": "^0.4.0",
     "ts-morph": "^18.0.0",
     "xregexp": "^5.1.0"
   },
   "devDependencies": {
-    "@fromdeno/test": "^0.3.0",
+    "@fromdeno/test": "^0.4.0",
     "@types/node": "^18.15.11",
     "deno-bin": "~1.32.2"
   }
