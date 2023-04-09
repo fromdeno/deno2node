@@ -5,11 +5,11 @@ const scopedPackage = /^(?:@[\w.-]+\/)?[\w.-]+$/;
 const version = /^[^/?]+$/;
 
 const services = [
-  XR.tag("x")`^npm:	(${scopedPackage})(?:@${version})?(${path})?$`,
+  XR.tag("x")`^npm:	(${scopedPackage})(?:@${version})?(${path})?`,
   XR.tag(
     "x",
-  )`^https://cdn\.skypack\.dev/	(${scopedPackage})(?:@${version})?(${path})?\?`,
-  XR.tag("x")`^https://esm\.sh/	(${scopedPackage})(?:@${version})?(${path})?$`,
+  )`^https://cdn\.skypack\.dev/	(${scopedPackage})(?:@${version})?(${path})?`,
+  XR.tag("x")`^https://esm\.sh/	(${scopedPackage})(?:@${version})?(${path})?`,
   XR.tag("x")`^https://deno\.land/	std(?:@${version})?/node/([\w/]+)\.ts$`,
   XR.tag("x")`^https://nest\.land/	std/node/${version}/([\w/]+)\.ts$`,
 ];

@@ -23,6 +23,7 @@
     "test": "src/cli.ts --noEmit",
     "pretest": "scripts/pretest.ts",
     "postbuild": "fdt lib/**/*.test.js",
+    "prebuild": "deno test --allow-read=. --no-npm",
     "clean": "git clean -fXde !node_modules/"
   },
   "repository": {
@@ -50,6 +51,7 @@
   "devDependencies": {
     "@fromdeno/test": "^0.4.0",
     "@types/node": "^18.15.11",
-    "deno-bin": "~1.32.2"
+    "deno-bin": "~1.32.2",
+    "fast-check": "^3.8.0"
   }
 }
