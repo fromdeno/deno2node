@@ -1,13 +1,7 @@
 import type { Context } from "../context.ts";
 import type { SourceFile } from "../deps.deno.ts";
 
-function createShimmer(ctx: Context) {
-  if (ctx.config.shim === undefined) {
-    return () => {};
-  }
-  const shimFile = ctx.project.addSourceFileAtPath(
-    ctx.resolve(ctx.config.shim),
-  );
+export const shimFile = (shimFile: SourceFile) => {
   const shims = Array.from(shimFile.getExportedDeclarations().keys());
   return (sourceFile: SourceFile) => {
     if (sourceFile === shimFile) return;
@@ -26,7 +20,7 @@ function createShimmer(ctx: Context) {
       moduleSpecifier,
     });
   };
-}
+};
 
 const isNodeSpecific = (sourceFile: SourceFile) =>
   sourceFile.getBaseNameWithoutExtension().toLowerCase().endsWith(".node");
@@ -34,7 +28,7 @@ const isNodeSpecific = (sourceFile: SourceFile) =>
 export function shimEverything(ctx: Context) {
   if (!ctx.config.shim) return;
   console.time("Shimming");
-  const shim = createShimmer(ctx);
+  const shim = shimFile(ctx.project.getSourceFileOrThrow(ctx.config.shim));
   for (const sourceFile of ctx.project.getSourceFiles()) {
     if (!isNodeSpecific(sourceFile)) {
       shim(sourceFile);
