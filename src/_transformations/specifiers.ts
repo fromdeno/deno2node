@@ -1,22 +1,20 @@
-import XR from "https://cdn.skypack.dev/xregexp@5.1.0?dts";
+import * as RE from "../_util/regex.ts";
 
-const path = /^\/[\w/.-]+$/;
-const scopedPackage = /^(?:@[\w.-]+\/)?[\w.-]+$/;
-const version = /^[^/?]+$/;
+export const scopedPackage = /(?:@[\w.-]+\/)?[\w.-]+/;
+const version = /[^/?]+/;
+const path = /\/[^?]*/;
 
-const services = [
-  XR.tag("x")`^npm:	(${scopedPackage})(?:@${version})?(${path})?`,
-  XR.tag(
-    "x",
-  )`^https://cdn\.skypack\.dev/	(${scopedPackage})(?:@${version})?(${path})?`,
-  XR.tag("x")`^https://esm\.sh/	(${scopedPackage})(?:@${version})?(${path})?`,
-  XR.tag("x")`^https://deno\.land/	std(?:@${version})?/node/([\w/]+)\.ts$`,
-  XR.tag("x")`^https://nest\.land/	std/node/${version}/([\w/]+)\.ts$`,
+const patterns = [
+  RE.tag`^npm:(${scopedPackage})(?:@${version})?(${path})?`,
+  RE.tag`^https://esm\.sh/(${scopedPackage})(?:@${version})?(${path})?`,
+  RE.tag`^https://cdn\.skypack\.dev/(${scopedPackage})(?:@${version})?(${path})?`,
+  RE.tag`^https://deno\.land/std(?:@${version})?/node/([\w/]+)\.ts$`,
+  RE.tag`^https://nest\.land/std/node/${version}/([\w/]+)\.ts$`,
 ];
 
 const transpileHttpsImport = (specifier: string) => {
-  for (const service of services) {
-    const match = service.exec(specifier);
+  for (const pattern of patterns) {
+    const match = pattern.exec(specifier);
     if (match === null) continue;
     const [, pkg, path = ""] = match;
     return pkg + path;

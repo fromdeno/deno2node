@@ -45,8 +45,7 @@
   },
   "dependencies": {
     "@deno/shim-deno-test": "^0.4.0",
-    "ts-morph": "^18.0.0",
-    "xregexp": "^5.1.0"
+    "ts-morph": "^18.0.0"
   },
   "devDependencies": {
     "@fromdeno/test": "^0.4.0",

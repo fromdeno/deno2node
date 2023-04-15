@@ -1,13 +1,14 @@
 import fc from "https://cdn.skypack.dev/fast-check@3.8.0?dts";
 import { transpileSpecifier } from "./specifiers.ts";
 
-const empty = fc.constant("");
-const join = (array: unknown[]) => array.join("");
-const relativePrefix = fc.constantFrom(".", "..");
+const join = (array: string[]) => array.join("");
+const path = fc.option(fc.webPath(), { nil: "" });
+const relativePrefix = fc.constantFrom("./", "../");
+const extension = fc.constantFrom("js", "ts", "jsx", "tsx");
 const version = fc.webSegment().map((s) => s ? `@${s}` : "");
-const path = fc.webPath().filter((s) => /^\/[\w/.-]+$/.test(s));
+const query = fc.webQueryParameters().map((s) => s ? `?${s}` : "");
 const name = fc.stringOf(fc.char().filter((c) => /[\w.-]/.test(c)));
-const query = fc.oneof(empty, fc.webQueryParameters().map((s) => `?${s}`));
+const relativePath = fc.tuple(relativePrefix, fc.webPath()).map(join);
 
 const scopedPackage = fc.tuple(
   name.map((s) => s ? `@${s}/` : ""),
@@ -23,11 +24,10 @@ const service = fc.constantFrom(
 Deno.test(function localSpecifiers() {
   fc.assert(
     fc.property(
-      relativePrefix,
-      fc.webPath(),
-      (prefix, path) =>
-        transpileSpecifier(`${prefix}/${path}.deno.ts`) ===
-          `${prefix}/${path}.node.js`,
+      relativePath,
+      extension,
+      (path, ext) =>
+        transpileSpecifier(`${path}.deno.${ext}`) === `${path}.node.js`,
     ),
   );
 });
