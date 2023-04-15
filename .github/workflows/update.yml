@@ -13,7 +13,15 @@ jobs:
         with:
           # to trigger release workflow
           ssh-key: ${{ secrets.SSH_DEPLOY_KEY }}
-      - uses: fregante/setup-git-user@v1
-      - run: npm ci
+      - name: git config
+        run: |
+          git config user.name 'GitHub Actions'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config user.signingKey '${{ secrets.SSH_DEPLOY_KEY }}'
+          git config gpg.format ssh
+      - run: npm ci --ignore-scripts
       - run: scripts/update.sh
+        env:
+          npm_config_sign_git_commit: true
+          npm_config_sign_git_tag: true
       - run: git push --follow-tags
