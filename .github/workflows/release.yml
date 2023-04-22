@@ -5,13 +5,16 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   npm:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - run: npm ci --ignore-scripts
-    - run: npm rebuild deno-bin
     - run: npm run build
     - name: Publish to npm
       run: |
@@ -19,3 +22,4 @@ jobs:
         npm publish --ignore-scripts
       env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NPM_CONFIG_PROVENANCE: true
