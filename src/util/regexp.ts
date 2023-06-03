@@ -5,12 +5,13 @@ const _source = (arg: string | RegExpSource) =>
     ? arg.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") // escape string
     : arg.source;
 
-export const tag = (
+export const tag = (flags = "") =>
+(
   literals: TemplateStringsArray,
   ...substitutions: ReadonlyArray<string | RegExpSource>
 ) => {
   const subpatterns = substitutions.map((sub) => `(?:${_source(sub)})`);
-  return new RegExp(String.raw(literals, ...subpatterns));
+  return new RegExp(String.raw(literals, ...subpatterns), flags);
 };
 
 export const union = (

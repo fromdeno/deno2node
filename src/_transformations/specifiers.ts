@@ -1,15 +1,15 @@
-import * as RE from "../_util/regex.ts";
+import * as re from "../util/regexp.ts";
 
-export const scopedPackage = /(?:@[\w.-]+\/)?[\w.-]+/;
+export const name = /(?:@[\w.-]+\/)?[\w.-]+/;
 const version = /[^/?]+/;
 const path = /\/[^?]*/;
 
 const patterns = [
-  RE.tag`^npm:(${scopedPackage})(?:@${version})?(${path})?`,
-  RE.tag`^https://esm\.sh/(${scopedPackage})(?:@${version})?(${path})?`,
-  RE.tag`^https://cdn\.skypack\.dev/(${scopedPackage})(?:@${version})?(${path})?`,
-  RE.tag`^https://deno\.land/std(?:@${version})?/node/([\w/]+)\.ts$`,
-  RE.tag`^https://nest\.land/std/node/${version}/([\w/]+)\.ts$`,
+  re.tag()`^npm:(${name})(?:@${version})?(${path})?`,
+  re.tag()`^https://esm\.sh/(${name})(?:@${version})?(${path})?`,
+  re.tag()`^https://cdn\.skypack\.dev/(${name})(?:@${version})?(${path})?`,
+  re.tag()`^https://deno\.land/std(?:@${version})?/node/([\w/]+)\.ts$`,
+  re.tag()`^https://nest\.land/std/node/${version}/([\w/]+)\.ts$`,
 ];
 
 const transpileHttpsImport = (specifier: string) => {
