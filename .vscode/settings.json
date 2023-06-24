@@ -7,5 +7,11 @@
     "source.organizeImports": true
   },
   "editor.defaultFormatter": "denoland.vscode-deno",
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "files.readonlyInclude": {
+    "lib/**": true,
+    "node_modules/**": true,
+    "package-lock.json": true,
+    "src/deps.deno.ts": true
+  }
 }
