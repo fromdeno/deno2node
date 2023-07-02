@@ -26,7 +26,7 @@ It is useful to put `deno2node` in a prepare script. You can configure this by
 running the following command.
 
 ```sh
-npm set-script prepare deno2node
+npm pkg set scripts.prepare=deno2node
 ```
 
 You can now invoke `deno2node` by running
@@ -173,6 +173,18 @@ to deduplicate vendored files across packages.
 Confer the automatically generated [API Reference] if you want to use
 `deno2node` from code.
 
+## Testing
+
+Build tests alongside source, and run them on Node.js with [`@fromdeno/test`].
+
+## Contributing
+
+`make watch` or `npm test -- --watch` to test on file change.
+
+`make` or `npm it` to install dependencies, build, and test the project.
+
+`git config core.hooksPath scripts/hooks/` to `make` before each commit.
+
 ## Versioning
 
 Similar to `tsc`, new features or TypeScript upgrades may alter output or
@@ -191,5 +203,6 @@ npm install --save-dev --save-prefix='~' deno2node
 [`grammy`]: https://github.com/grammyjs/grammY
 [`pnpm`]: https://github.com/pnpm/pnpm#background
 [`ts-morph`]: https://github.com/dsherret/ts-morph
+[`@fromdeno/test`]: https://github.com/fromdeno/test
 [`tsconfig.json`]: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
 [api reference]: https://doc.deno.land/https/deno.land/x/deno2node/src/mod.ts

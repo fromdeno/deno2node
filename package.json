@@ -19,11 +19,10 @@
   "scripts": {
     "fmt": "deno fmt",
     "lint": "deno lint",
-    "build": "src/cli.ts",
-    "test": "src/cli.ts --noEmit",
-    "pretest": "scripts/pretest.ts",
-    "postbuild": "fdt lib/**/*.test.js",
-    "prebuild": "deno test --allow-read=. --no-npm",
+    "prepare": "src/cli.ts",
+    "test": "deno test --allow-read=.",
+    "dependencies": "scripts/pretest.ts",
+    "postprepare": "fdt lib/**/*.test.js",
     "clean": "git clean -fXde !node_modules/"
   },
   "repository": {
