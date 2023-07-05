@@ -1,4 +1,3 @@
 #!/bin/bash -eu
-git diff --exit-code package.json
 make
-git add package-lock.json
+git diff --exit-code --name-status package-lock.json
