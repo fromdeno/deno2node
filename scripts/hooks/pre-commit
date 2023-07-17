@@ -1,3 +1,2 @@
 #!/bin/bash -eu
-make
-git diff --exit-code --name-status package-lock.json
+git diff --quiet --cached src/ || src/cli.ts --noEmit

@@ -2,10 +2,16 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "shell",
-      "command": "make",
+      "type": "npm",
+      "script": "prepare",
       "group": "build",
-      "label": "make"
+      "label": "npm: prepare"
+    },
+    {
+      "type": "npm",
+      "script": "test",
+      "group": "test",
+      "label": "npm: test"
     }
   ]
 }

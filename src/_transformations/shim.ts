@@ -28,7 +28,7 @@ const isNodeSpecific = (sourceFile: SourceFile) =>
 export function shimEverything(ctx: Context) {
   if (!ctx.config.shim) return;
   console.time("Shimming");
-  const shim = shimFile(ctx.project.getSourceFileOrThrow(ctx.config.shim));
+  const shim = shimFile(ctx.project.addSourceFileAtPath(ctx.config.shim));
   for (const sourceFile of ctx.project.getSourceFiles()) {
     if (!isNodeSpecific(sourceFile)) {
       shim(sourceFile);
