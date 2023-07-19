@@ -1,11 +1,12 @@
-#!/usr/bin/env -S deno run --no-npm --no-prompt --allow-read=. --allow-write=.
+#!/usr/bin/env -S deno run --no-prompt --allow-read=. --allow-write=lib/
+import { existsSync } from "node:fs";
 import { ts } from "./deps.deno.ts";
 import { getHelpText } from "./help.ts";
 import { getVersion, initializeProject } from "./init.ts";
 import { Context, deno2node, emit } from "./mod.ts";
 
 const { options, fileNames, errors } = ts.parseCommandLine(Deno.args);
-const tsConfigFilePath = options.project ?? fileNames[0] ?? "tsconfig.json";
+const tsConfigFilePath = options.project ?? ts.findConfigFile(".", existsSync);
 
 if (errors.length) {
   for (const error of errors) {
@@ -30,11 +31,26 @@ if (options.init) {
   Deno.exit(0);
 }
 
-console.time("Loading tsconfig");
-const ctx = new Context({ tsConfigFilePath, compilerOptions: options });
-console.timeEnd("Loading tsconfig");
+const ctx = new Context({
+  tsConfigFilePath,
+  compilerOptions: options,
+  skipAddingFilesFromTsConfig: true,
+});
 
-await deno2node(ctx);
+console.time("Loading source files");
+if (fileNames.length) {
+  ctx.project.addSourceFilesAtPaths(fileNames);
+} else if (tsConfigFilePath) {
+  ctx.project.addSourceFilesFromTsConfig(tsConfigFilePath);
+} else {
+  console.error("Specify entry points.");
+  Deno.exit(2);
+}
+ctx.project.resolveSourceFileDependencies();
+console.timeEnd("Loading source files");
+
+deno2node(ctx);
+
 console.time("Emitting");
 const diagnostics = await emit(ctx.project);
 console.timeEnd("Emitting");
