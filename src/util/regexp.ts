@@ -3,7 +3,7 @@ export type RegExpSource = Pick<RegExp, "source">;
 const _source = (arg: string | RegExpSource) =>
   typeof arg === "string"
     ? arg.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") // escape string
-    : arg.source;
+    : arg.source.replace(/^\^|\$$/g, "");
 
 export const tag = (flags = "") =>
 (
