@@ -2,6 +2,9 @@
 
 `tsc` replacement for transpiling [Deno] libraries to run on [Node.js].
 
+> **Note** You don't need this if you maintain a npm package Deno can already
+> run: https://deno.land/manual/node
+
 ![Because Deno's tooling is way simpler than
 Node's](https://pbs.twimg.com/media/FBba11IXMAQB7pX?format=jpg)
 
@@ -14,31 +17,21 @@ Run `npx deno2node --init` in an empty directory.
 
 ## CLI Usage From Node.js
 
-First, install `deno2node`.
-
 ```sh
-npm install --save-dev deno2node
-```
-
-Then, create a [`tsconfig.json`], if you don't have one already.
-
-It is useful to put `deno2node` in a prepare script. You can configure this by
-running the following command.
-
-```sh
+npm install -ED deno2node
 npm pkg set scripts.prepare=deno2node
 ```
 
-You can now invoke `deno2node` by running
+> **Note** New features or TypeScript upgrades may change output or diagnostics
+> across minor versions of `deno2node`. Use `--save-prefix='~'` or
+> `--save-exact` (`-E`) to avoid unexpected failures.
 
-```sh
-npm run prepare
-```
+Create a [`tsconfig.json`] to specify `"compilerOptions"` and `"files"` to
+`"include"`, if you don't have one already.
+
+You can now invoke `deno2node` by running `npm run prepare`.
 
 It will alse be executed automatically when you run `npm install`.
-
-> **Note** Deno can run many Node packages out of the box:
-> https://deno.land/manual/node
 
 ## CLI Usage From Deno
 
@@ -68,16 +61,9 @@ enough for most needs.
 
 ### Shimming
 
-Some things are global in Deno, but not in Node.js. One example for this is
-`fetch`. Consequently, you need to _shim_ them, i.e. provide code that
-supplements the missing globals.
+Some things are global in Deno, but not in Node.js.
 
-> **Note** `deno2node` does not actually touch global definitions. Instead, it
-> only injects import statements in the respective modules.
-
-Install the packages providing the shims.
-
-Now, create a file that exports the globals you need:
+To rectify this, create a file that exports shims for the globals you need:
 
 ```ts
 // @filename: src/shim.node.ts
@@ -89,8 +75,8 @@ export { Deno } from "@deno/shim-deno";
 export { alert, confirm, prompt } from "@deno/shim-prompts";
 ```
 
-Lastly, you need to register your shims in `tsconfig.json` so `deno2node` can
-inject them for you:
+Then, register your shims in [`tsconfig.json`], so `deno2node` can import them
+where needed:
 
 ```jsonc
 // @filename: tsconfig.json
@@ -179,23 +165,9 @@ Build tests alongside source, and run them on Node.js with [`@fromdeno/test`].
 
 ## Contributing
 
-`make watch` or `npm test -- --watch` to test on file change.
+`npm it` to install dependencies, build, and test the project.
 
-`make` or `npm it` to install dependencies, build, and test the project.
-
-`git config core.hooksPath scripts/hooks/` to `make` before each commit.
-
-## Versioning
-
-Similar to `tsc`, new features or TypeScript upgrades may alter output or
-diagnostics of the CLI across minor versions. While this usually does not break
-anything, you may still want to pin the minor version, hence only allowing patch
-updates. You can do this by adding a `~` prefix to the version in your
-`package.json` file.
-
-```sh
-npm install --save-dev --save-prefix='~' deno2node
-```
+`git config core.hooksPath scripts/hooks/` to build before each commit.
 
 [deno]: https://deno.land/
 [node.js]: https://nodejs.org/
