@@ -1,8 +1,9 @@
-import assert from "node:assert/strict";
+import * as assert from "node:assert/strict";
+import test from "node:test";
 import { Project, ts } from "../deps.deno.ts";
-import { vendorFile } from "./vendor.ts";
+import { vendorSpecifiers } from "./vendor.ts";
 
-Deno.test(function vendoring() {
+test(function vendoring() {
   const project = new Project({
     tsConfigFilePath: "tsconfig.json",
     skipAddingFilesFromTsConfig: true,
@@ -12,11 +13,12 @@ Deno.test(function vendoring() {
   const exportDeclaration =
     file.getChildrenOfKind(ts.SyntaxKind.ExportDeclaration)[0];
 
-  vendorFile(vendorDir.getPath())(file);
+  vendorSpecifiers(vendorDir.getPath())(file);
   const specifierValue = exportDeclaration.getModuleSpecifierValue()!;
   assert.match(specifierValue, /^.\/vendor\//);
+  assert.match(specifierValue, /\.js$/);
 
   // test idempotence
-  vendorFile(vendorDir.getPath())(file);
+  vendorSpecifiers(vendorDir.getPath())(file);
   assert.equal(exportDeclaration.getModuleSpecifierValue(), specifierValue);
 });

@@ -1,6 +1,7 @@
 name: Update
 
 on:
+  workflow_dispatch: {}
   schedule:
     # 30 min after deno-bin
     - cron: '30 12 * * SAT'
@@ -17,9 +18,11 @@ jobs:
         run: |
           git config user.name 'GitHub Actions'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git config user.signingKey '${{ secrets.SSH_DEPLOY_KEY }}'
+          git config user.signingKey "$SSH_KEY"
           git config gpg.format ssh
-      - run: npm ci --ignore-scripts
+          git config core.hooksPath scripts/hooks/
+        env:
+          SSH_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
       - run: scripts/update.sh
         env:
           npm_config_sign_git_commit: true

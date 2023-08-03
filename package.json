@@ -20,9 +20,9 @@
     "fmt": "deno fmt",
     "lint": "deno lint",
     "prepare": "src/cli.ts",
+    "postprepare": "node --test lib/",
     "test": "deno test --allow-read=.",
     "dependencies": "scripts/pretest.ts",
-    "postprepare": "fdt lib/**/*.test.js",
     "clean": "git clean -fXde !node_modules/"
   },
   "repository": {
@@ -43,13 +43,11 @@
     "node": ">=14.13.1"
   },
   "dependencies": {
-    "@deno/shim-deno-test": "^0.4.0",
     "ts-morph": "^19.0.0"
   },
   "devDependencies": {
-    "@fromdeno/test": "^0.4.0",
     "@types/node": "^18.15.11",
-    "deno-bin": "~1.35.0",
+    "deno-bin": "~1.36.0",
     "fast-check": "^3.10.0"
   }
 }

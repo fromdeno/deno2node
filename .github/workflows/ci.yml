@@ -3,14 +3,16 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches:
+      - 'main'
+      - 'v[0-9]+'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - run: npm ci --ignore-scripts
+    - run: npm install --ignore-scripts
     - run: echo "$PWD/node_modules/.bin" >> "$GITHUB_PATH"
     - run: deno test --no-run
     - run: deno lint
@@ -19,5 +21,5 @@ jobs:
     - run: lib/cli.js --outDir nodejs/
     - run: git diff --no-index lib/ nodejs/
 
-    - run: deno test --allow-read=.
-    - run: fdt lib/**/*.test.js
+    - run: deno test --allow-read=. src/
+    - run: node --test lib/

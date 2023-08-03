@@ -1,4 +1,5 @@
 import fc from "https://cdn.skypack.dev/fast-check@3.8.0?dts";
+import test from "node:test";
 import { transpileSpecifier } from "./specifiers.ts";
 
 const join = (array: string[]) => array.join("");
@@ -21,7 +22,7 @@ const service = fc.constantFrom(
   "https://cdn.skypack.dev/",
 );
 
-Deno.test(function localSpecifiers() {
+test(function localSpecifiers() {
   fc.assert(
     fc.property(
       relativePath,
@@ -32,7 +33,7 @@ Deno.test(function localSpecifiers() {
   );
 });
 
-Deno.test(function remoteSpecifiers() {
+test(function remoteSpecifiers() {
   fc.assert(
     fc.property(service, scopedPackage, version, path, query, (...segments) => {
       const [, scopedPackage, , path] = segments;
