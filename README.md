@@ -161,7 +161,9 @@ Confer the automatically generated [API Reference] if you want to use
 
 ## Testing
 
-Build tests alongside source, and run them on Node.js with [`@fromdeno/test`].
+Register tests via `"node:test"`, and build them alongside the source.
+
+Then, test with `deno test src/` _and_ `node --test lib/`.
 
 ## Contributing
 
@@ -175,6 +177,5 @@ Build tests alongside source, and run them on Node.js with [`@fromdeno/test`].
 [`grammy`]: https://github.com/grammyjs/grammY
 [`pnpm`]: https://github.com/pnpm/pnpm#background
 [`ts-morph`]: https://github.com/dsherret/ts-morph
-[`@fromdeno/test`]: https://github.com/fromdeno/test
 [`tsconfig.json`]: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
 [api reference]: https://doc.deno.land/https/deno.land/x/deno2node/src/mod.ts
