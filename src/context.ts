@@ -1,14 +1,16 @@
-import path from "node:path";
+import * as path from "node:path";
 import { type Config, parse } from "./config.ts";
 import { Project, ts } from "./deps.deno.ts";
 
 const compilerOptions: ts.CompilerOptions = {
+  // footguns
   removeComments: false,
+  // Deno defaults
   strict: true,
   useDefineForClassFields: true,
 };
 
-interface Options {
+export interface Options {
   readonly tsConfigFilePath?: string;
   readonly compilerOptions?: ts.CompilerOptions;
   readonly skipAddingFilesFromTsConfig?: boolean;

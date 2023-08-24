@@ -19,6 +19,8 @@ jobs:
     - name: Publish to npm
       run: |
         npm config set //registry.npmjs.org/:_authToken '${NPM_TOKEN}'
+        [[ "$GITHUB_REF_NAME" =~ - ]] && npm config set tag=next
+        npm pkg set version="$GITHUB_REF_NAME"
         npm publish --ignore-scripts
       env:
         NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
