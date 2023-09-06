@@ -2,7 +2,8 @@
 
 `tsc` replacement for transpiling [Deno] libraries to run on [Node.js].
 
-> **Note** You don't need this if you maintain a npm package Deno can already
+> [!Note]
+> You don't need this if you maintain a npm package Deno can already
 > run: https://deno.land/manual/node
 
 ![Because Deno's tooling is way simpler than
@@ -12,7 +13,8 @@ Node's](https://pbs.twimg.com/media/FBba11IXMAQB7pX?format=jpg)
 
 Run `npx deno2node --init` in an empty directory.
 
-> **Note** If you don't already have a `package.json`, you may find [`dnt`]
+> [!Note]
+> If you don't already have a `package.json`, you may find [`dnt`]
 > easier to use.
 
 ## CLI Usage From Node.js
@@ -22,7 +24,8 @@ npm install -ED deno2node
 npm pkg set scripts.prepare=deno2node
 ```
 
-> **Note** New features or TypeScript upgrades may change output or diagnostics
+> [!Warning]
+> New features or TypeScript upgrades may change output or diagnostics
 > across minor versions of `deno2node`. Use `--save-prefix='~'` or
 > `--save-exact` (`-E`) to avoid unexpected failures.
 
@@ -67,13 +70,13 @@ To rectify this, create a file that exports shims for the globals you need:
 
 ```ts
 // @filename: src/shim.node.ts
-export { Blob } from "buffer";
 export { webcrypto as crypto } from "crypto";
-
-export { fetch, File, FormData, Headers, Request, Response } from "undici";
 export { Deno } from "@deno/shim-deno";
 export { alert, confirm, prompt } from "@deno/shim-prompts";
 ```
+
+> [!Note]
+> `node:` APIs are well-supported on both runtimes.
 
 Then, register your shims in [`tsconfig.json`], so `deno2node` can import them
 where needed:

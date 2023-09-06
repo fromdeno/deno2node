@@ -1,5 +1,5 @@
-#!/usr/bin/env -S deno run --no-check --allow-read --allow-write='.'
-import fs from "node:fs/promises";
+#!/usr/bin/env -S deno run --allow-read --allow-write='.'
+import * as fs from "node:fs/promises";
 
 const shimFile = "// See https://github.com/fromdeno/deno2node#shimming";
 const gitignore = "/lib/\n/node_modules/\n/src/vendor/";
@@ -24,13 +24,16 @@ async function createPackageJson() {
     "typings": "./lib/mod.d.ts",
     "files": [
       "lib/",
+      "!lib/**/*.test.*",
       "!*/vendor/**/*.ts*",
     ],
     "scripts": {
-      "prepare": "deno2node --project tsconfig.json",
-      "clean": "git clean -fXde !node_modules/",
       "fmt": "deno fmt",
       "lint": "deno lint",
+      "test": "deno test",
+      "prepare": "deno2node",
+      "postprepare": "node --test lib/",
+      "clean": "git clean -fXde !node_modules/",
     },
     "devDependencies": {
       "deno2node": `~${await getVersion()}`,
