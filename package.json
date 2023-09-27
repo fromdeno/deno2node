@@ -1,6 +1,6 @@
 {
   "name": "deno2node",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "description": "`tsc` replacement for transpiling Deno libraries to run on Node.js.",
   "type": "module",
   "bin": {
