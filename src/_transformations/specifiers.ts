@@ -10,10 +10,11 @@ const url = re.tag()`^${re.union(services)}(${name})${version}?(${path})?.*$`;
 const transpileHttpsImport = (specifier: string) =>
   specifier.replace(url, "$1$2");
 
+export const transpileExtension = (specifier: string) =>
+  specifier.replace(/[jt]sx?$/i, "js");
+
 const transpileRelativeImport = (specifier: string) =>
-  specifier
-    .replace(/\.[jt]sx?$/i, ".js")
-    .replace(/\.deno\.js$/i, ".node.js");
+  transpileExtension(specifier).replace(".deno.", ".node.");
 
 const isRelative = (specifier: string) => /^\.\.?\//.test(specifier);
 
@@ -22,7 +23,15 @@ export const transpileSpecifier = (specifier: string) => {
   return transpileHttpsImport(specifier);
 };
 
-export function transpileSpecifiers(sourceFile: SourceFile) {
+/**
+ * Replaces all import/export specifiers in `sourceFile`
+ * according to the specified `transpileSpecifier` function.
+ * The default one makes specifiers Node-friendly.
+ */
+export function transpileSpecifiers(
+  sourceFile: SourceFile,
+  fn = transpileSpecifier,
+) {
   for (const statement of sourceFile.getStatements()) {
     if (
       Node.isImportDeclaration(statement) ||
@@ -30,7 +39,7 @@ export function transpileSpecifiers(sourceFile: SourceFile) {
     ) {
       const modSpecifierValue = statement.getModuleSpecifierValue();
       if (modSpecifierValue !== undefined) {
-        statement.setModuleSpecifier(transpileSpecifier(modSpecifierValue));
+        statement.setModuleSpecifier(fn(modSpecifierValue));
       }
     }
   }
