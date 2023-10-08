@@ -1,11 +1,6 @@
 import { shimEverything } from "./_transformations/shim.ts";
-import { transpileSpecifiers } from "./_transformations/specifiers.ts";
 import { vendorEverything } from "./_transformations/vendor.ts";
 import { type Context } from "./context.ts";
-import { type SourceFile } from "./deps.deno.ts";
-
-const isDenoSpecific = (sourceFile: SourceFile) =>
-  sourceFile.getBaseNameWithoutExtension().toLowerCase().endsWith(".deno");
 
 /**
  * Attempts to transform arbitrary `ctx.project` into a valid Node.js project:
@@ -44,16 +39,7 @@ const isDenoSpecific = (sourceFile: SourceFile) =>
  * [shim file]: https://github.com/fromdeno/deno2node/blob/main/src/shim.node.ts
  */
 export function deno2node(ctx: Context): void {
-  console.time("Basic transformations");
-  for (const sourceFile of ctx.project.getSourceFiles()) {
-    if (isDenoSpecific(sourceFile)) {
-      ctx.project.removeSourceFile(sourceFile);
-      continue;
-    }
-    transpileSpecifiers(sourceFile);
-  }
-  console.timeEnd("Basic transformations");
-
+  ctx.changeRuntimeTo("node");
   vendorEverything(ctx);
   shimEverything(ctx);
 }
