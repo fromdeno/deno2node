@@ -1,6 +1,12 @@
 import fc from "https://esm.sh/fast-check@3.10.0";
-import { name, services, transpileSpecifier } from "./specifiers.ts";
+import {
+  name,
+  services,
+  transpileHttpsImport,
+  transpileSpecifier,
+} from "./specifiers.ts";
 
+const runtime = fc.stringMatching(/^\w+$/);
 const join = (array: string[]) => array.join("");
 const relativePrefix = fc.constantFrom("./", "../");
 const extension = fc.constantFrom("js", "ts", "jsx", "tsx");
@@ -20,9 +26,15 @@ Deno.test(function localSpecifiers() {
     fc.property(
       relativePath,
       extension,
-      (path, ext) =>
-        transpileSpecifier(`${path}.deno.m${ext}`) === `${path}.node.mjs` &&
-        transpileSpecifier(`${path}.deno.${ext}`) === `${path}.node.js`,
+      runtime,
+      runtime,
+      (path, ext, oldRuntime, newRuntime) => {
+        const fn = transpileSpecifier(oldRuntime, newRuntime);
+        return (
+          fn(`${path}.${oldRuntime}.m${ext}`) === `${path}.${newRuntime}.mjs` &&
+          fn(`${path}.${oldRuntime}.${ext}`) === `${path}.${newRuntime}.js`
+        );
+      },
     ),
   );
 });
@@ -31,7 +43,7 @@ Deno.test(function remoteSpecifiers() {
   fc.assert(
     fc.property(urlSegments, (segments) => {
       const [, scopedPackage, , path] = segments;
-      return transpileSpecifier(join(segments)) === scopedPackage + path;
+      return transpileHttpsImport(join(segments)) === scopedPackage + path;
     }),
   );
 });

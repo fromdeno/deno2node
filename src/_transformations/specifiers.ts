@@ -7,30 +7,30 @@ const version = /^@[^/?]+$/;
 const path = /\/[^?]*/;
 const url = re.tag()`^${re.union(services)}(${name})${version}?(${path})?.*$`;
 
-const transpileHttpsImport = (specifier: string) =>
+export const transpileHttpsImport = (specifier: string) =>
   specifier.replace(url, "$1$2");
 
 export const transpileExtension = (specifier: string) =>
   specifier.replace(/[jt]sx?$/i, "js");
 
-const transpileRelativeImport = (specifier: string) =>
-  transpileExtension(specifier).replace(".deno.", ".node.");
-
 const isRelative = (specifier: string) => /^\.\.?\//.test(specifier);
 
-export const transpileSpecifier = (specifier: string) => {
-  if (isRelative(specifier)) return transpileRelativeImport(specifier);
-  return transpileHttpsImport(specifier);
-};
+export const transpileSpecifier =
+  (oldRuntime: string, newRuntime: string) => (specifier: string) =>
+    isRelative(specifier)
+      ? transpileExtension(specifier).replace(
+        `.${oldRuntime}.`,
+        `.${newRuntime}.`,
+      )
+      : transpileHttpsImport(specifier);
 
 /**
  * Replaces all import/export specifiers in `sourceFile`
- * according to the specified `transpileSpecifier` function.
- * The default one makes specifiers Node-friendly.
+ * according to the specified `fn`.
  */
-export function transpileSpecifiers(
+export function replaceSpecifiers(
   sourceFile: SourceFile,
-  fn = transpileSpecifier,
+  fn: (specifier: string) => string,
 ) {
   for (const statement of sourceFile.getStatements()) {
     if (
