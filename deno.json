@@ -1,5 +1,6 @@
 {
   "lock": false,
-  "nodeModulesDir": false,
+  "unstable": ["byonm"],
+  "fmt": { "proseWrap": "preserve" },
   "exclude": ["lib/", "package-lock.json"]
 }

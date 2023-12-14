@@ -16,8 +16,10 @@ fi
 npm install --save-dev --save-prefix='~' deno-bin@latest
 npm install-test ts-morph@latest
 ! git diff --quiet src/deps.deno.ts
-src/cli.ts --noEmit
-newTsVersion=$(scripts/ts-version.ts || exit 0)
-git add src/deps.deno.ts
 
+newTsVersion=$(scripts/ts-version.ts || exit 0)
+npm run prepare
+lib/cli.js --noEmit
+
+git add src/deps.deno.ts
 npm version minor --force --message "Upgrade to TypeScript ${newTsVersion}"
