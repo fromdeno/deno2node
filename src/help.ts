@@ -26,7 +26,8 @@ You can learn about the compiler options at https://aka.ms/tsc
 `;
 }
 
-const TTY = Deno.isatty(Deno.stdout.rid);
+export const useColors = Deno.stdout.isTerminal() && !Deno.noColor;
+
 function bold(text: string) {
   return format(text, 1);
 }
@@ -34,5 +35,5 @@ function blue(text: string) {
   return format(text, 34);
 }
 function format(text: string, ansi: number) {
-  return TTY ? `\u001b[${ansi}m${text}\u001b[0m` : text;
+  return useColors ? `\u001b[${ansi}m${text}\u001b[0m` : text;
 }

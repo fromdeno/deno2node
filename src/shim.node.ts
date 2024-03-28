@@ -11,9 +11,12 @@ export const Deno = {
   build: { os },
   chmod,
   exit: process.exit,
-  isatty,
-  noColor: process.env.NO_COLOR !== undefined,
-  stdout: { rid: process.stdout.fd },
+  get noColor() {
+    return Boolean(process.env.NO_COLOR);
+  },
+  stdout: {
+    isTerminal: () => isatty(process.stdout.fd),
+  },
 };
 
 export async function fetch(fileUrl: URL) {
