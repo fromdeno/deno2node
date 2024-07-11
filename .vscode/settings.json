@@ -4,7 +4,7 @@
   "deno.unstable": false,
   "deno.path": "node_modules/.bin/deno",
   "editor.codeActionsOnSave": {
-    "source.organizeImports": true
+    "source.organizeImports": "explicit"
   },
   "editor.defaultFormatter": "denoland.vscode-deno",
   "editor.formatOnSave": true,
@@ -13,5 +13,9 @@
     "node_modules/**": true,
     "package-lock.json": true,
     "src/deps.deno.ts": true
+  },
+  "terminal.integrated.env.linux": {
+    "NPM_CONFIG_PREID": "beta",
+    "DENO_FUTURE": "1"
   }
 }

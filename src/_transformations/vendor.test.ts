@@ -9,7 +9,11 @@ test(function vendoring() {
     skipAddingFilesFromTsConfig: true,
   });
   const vendorDir = project.createDirectory("src/vendor");
-  const file = project.addSourceFileAtPath("src/deps.deno.ts");
+  const file = project.createSourceFile(
+    "src/deps.deno.ts",
+    'export * from "https://deno.land/x/ts_morph/mod.ts"',
+    { overwrite: true },
+  );
   const exportDeclaration =
     file.getChildrenOfKind(ts.SyntaxKind.ExportDeclaration)[0];
 
