@@ -1,4 +1,4 @@
-import fc from "https://cdn.skypack.dev/fast-check@3.8.0?dts";
+import fc from "fast-check";
 import test from "node:test";
 import { transpileSpecifier } from "./specifiers.ts";
 
