@@ -14,6 +14,7 @@
   },
   "files": [
     "lib/",
+    "tsconfig.json",
     "!lib/**/*.test.*"
   ],
   "scripts": {
@@ -27,9 +28,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fromdeno/deno2node.git"
+    "url": "git+https://github.com/wojpawlik/deno2node.git"
   },
-  "homepage": "https://fromdeno.org",
+  "homepage": "https://t.me/fromdeno",
   "keywords": [
     "typescript",
     "transpile",

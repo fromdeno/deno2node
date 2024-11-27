@@ -3,6 +3,7 @@ import * as fs from "node:fs/promises";
 
 const shimFile = "// See https://github.com/fromdeno/deno2node#shimming";
 const gitignore = "/lib/\n/node_modules/\n/src/vendor/";
+const denoJson = '{ "exclude": ["lib/"] }';
 
 async function download(url: URL, target: string) {
   const response = await fetch(url);
@@ -45,13 +46,12 @@ async function createPackageJson() {
 }
 
 export async function initializeProject() {
-  const denoJsonUrl = new URL("../deno.json", import.meta.url);
   const tsconfigUrl = new URL("../tsconfig.json", import.meta.url);
   await fs.mkdir("src/");
   await Promise.all([
     createPackageJson(),
-    download(denoJsonUrl, "deno.json"),
     download(tsconfigUrl, "tsconfig.json"),
+    fs.writeFile("deno.json", denoJson, { flag: "wx" }),
     fs.writeFile(".gitignore", gitignore, { flag: "wx" }),
     fs.writeFile("src/shim.node.ts", shimFile, { flag: "wx" }),
   ]);
